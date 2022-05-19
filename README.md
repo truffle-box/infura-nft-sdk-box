@@ -1,6 +1,6 @@
-# Web3 Unleashed 🐰 🐶 🐱 🐭 🐹
+# NFT API
 
-A boilerplate for the petaverse!
+NFT all the things!
 
 ## Setup
 
@@ -12,14 +12,6 @@ $ yarn
 
 - Do this
 - Do that
-
-## Contract
-
-...
-
-## Front End
-
-...
 
 ## Support
 
