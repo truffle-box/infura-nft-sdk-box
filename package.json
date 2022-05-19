@@ -1,0 +1,37 @@
+{
+  "name": "nft-api",
+  "version": "1.0.0",
+  "description": "NFT all the things!",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/truffle-box/nft-api-box.git"
+  },
+  "keywords": [
+    "infura",
+    "api",
+    "ethereum",
+    "web3",
+    "blockchain",
+    "solidity",
+    "metamask"
+  ],
+  "author": "ConsenSys Software Inc.",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/truffle-box/nft-api-boxissues"
+  },
+  "homepage": "https://github.com/truffle-box/nft-api-box#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
+    "husky": "^8.0.1"
+  }
+}
