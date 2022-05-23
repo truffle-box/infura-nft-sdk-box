@@ -5,7 +5,7 @@ NFT all the things!
 ## Installation
 
 ```bash
-$ yarn
+$ npm i
 ```
 
 ## Usage
