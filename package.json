@@ -6,8 +6,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "npx tsnd --respawn scripts/xyz.ts"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/truffle-box/nft-api-box.git"
@@ -28,10 +29,15 @@
   },
   "homepage": "https://github.com/truffle-box/nft-api-box#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.6.0"
+    "@openzeppelin/contracts": "^4.6.0",
+    "consensys-sdk": "git@github.com:ConsenSys/consensys-sdk.git",
+    "npm": "^8.10.0", 
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "eslint": "^8.15.0",
-    "husky": "^8.0.1"
+    "husky": "^8.0.1",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.6.4"
   }
 }
