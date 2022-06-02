@@ -1,56 +1,54 @@
-import React, { useContext } from "react";
+import React, { useContext } from 'react';
 
-import Jazzicon, { jsNumberForAddress } from "react-jazzicon";
-import styled from "styled-components";
+import Avvvatars from 'avvvatars-react';
+import styled from 'styled-components';
 
 import { EthProvider } from "../../ethereum";
-import { formatAddress } from "../../utils";
+import { formatAddress } from '../../utils';
 
 const Wrap = styled.div`
-  align-items: center;
-  border: 1px solid #bbc0c5;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 3px 12px 0px,
-    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-  border-radius: 25px;
+	background-color: #282828;
   display: flex;
-  background-color: #fff;
+  cursor: default;
   flex-direction: row;
-  padding: 0.5em 0.75em;
-  p {
-    padding: 0;
-    margin: 0;
-    font-size: 16px;
-    line-height: 16px;
+  border-radius: 25px;
+  position: relative;
+	gap: 0.5em;
+	align-items: center;
+  > p {
+		font-family:
+    padding-bottom: 3px;
+		padding-right: 1em;
   }
 `;
 
 const JazziconWrap = styled.div`
-  border: 1px solid #000;
   border-radius: 50%;
-  height: 20px;
-  margin-left: 0.5rem;
-  overflow: hidden;
-  padding: 2px;
-  width: 20px;
-  > img {
+	padding: 2px;
+  height: 30px;
+  width: 30px;
+  img {
     border-radius: 50%;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
   }
 `;
 
 const Account = () => {
-  const { user, chainId } = useContext(EthProvider);
-  const { address } = user;
+  const { user } = useContext(EthProvider);
+  const { address, avatar, ens } = user;
 
   return (
     <Wrap>
-      <p>{formatAddress(address)}</p>
-      <JazziconWrap chainId={chainId}>
-        <Jazzicon diameter={20} seed={jsNumberForAddress(address)} />
+			<JazziconWrap>
+        {avatar
+        ? <img src={avatar} alt='ENS Avatar'/>
+        : <Avvvatars value={address} style="shape" size={30} />
+      }
       </JazziconWrap>
+      <p>{ens || formatAddress(address)}</p>
     </Wrap>
   );
-};
+}
 
 export default Account;

@@ -26,12 +26,18 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "avvvatars-react": "^0.4.2",
     "eslint": "^8.16.0",
     "ethers": "^5.6.8",
     "husky": "^8.0.1",
+    "immer": "^9.0.14",
+    "polished": "^4.2.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "styled-components": "^5.3.5",
+    "use-immer": "^0.7.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
