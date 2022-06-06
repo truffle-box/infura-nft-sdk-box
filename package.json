@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/truffle-box/nft-api-boxissues"
   },
-  "homepage": "https://github.com/truffle-box/nft-api-box#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0",
     "@testing-library/jest-dom": "^5.16.4",

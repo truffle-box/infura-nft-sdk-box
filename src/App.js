@@ -4,6 +4,7 @@ import NoMatch from "./pages/NoMatch";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
 import AddContract from "./pages/AddContract";
+import LoadContract from './pages/LoadContract';
 
 const App = () => {
     return (
@@ -11,7 +12,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<Main />} />
-              <Route path="/add-snap" element={<AddContract />} />
+              <Route path="/add-contract" element={<AddContract />} />
+              <Route path="/load-contract" element={<LoadContract />} />
               <Route path="*" element={<NoMatch />} />
             </Route>
           </Routes>

@@ -24,7 +24,7 @@ const FilterLink = ({ link, name, icon, category, children, ...props }) => {
 
   return (
     <Wrap
-      to={`/test/?category=${category}`}
+      to={`/load-contract`}
       {...props}
       style={{
         ...props.style,

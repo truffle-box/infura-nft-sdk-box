@@ -11,7 +11,7 @@ export const Provider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
 
   const setAccount = useCallback(
-    async (provider, accounts, networkName, chainId, contract) => {
+    async (provider, accounts, networkName, chainId) => {
       if (accounts.length > 0) {
         try {
           const connectedAccount = {
@@ -34,15 +34,10 @@ export const Provider = ({ children }) => {
       if (provider) {
         const signer = await provider.getSigner();
         const { name, chainId } = await provider.getNetwork();
-        const contract = new ethers.Contract(
-          "0x9dA6F8a65b7fc0381b8d4e943C6E31DBB83BE74C",
-          {},
-          signer
-        );
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
-        setAccount(provider, accounts, name, chainId, contract);
+        setAccount(provider, accounts, name, chainId);
         dispatch({
           type: "CONNECTED_PROVIDER",
           payload: {
@@ -50,7 +45,6 @@ export const Provider = ({ children }) => {
             signer,
             name,
             chainId,
-            contract,
           },
         });
       }
@@ -75,7 +69,6 @@ export const Provider = ({ children }) => {
   }, [connectUser, dispatch]);
 
   const {
-    contract,
     isLoading,
     isConnected,
     name,
@@ -96,22 +89,11 @@ export const Provider = ({ children }) => {
     }
   };
 
-  const listSnaps = async () => {
-    const snaps = [];
-    const numberOfSnaps = await contract.getNumberOfSnaps();
-    for (let i = 0; i < numberOfSnaps.toNumber(); i++) {
-      const snap = await contract.getSnap(i);
-      snaps.push(snap);
-    }
-    return snaps;
-  };
-
   return (
     <EthProvider.Provider
       value={{
         state,
         dispatch,
-        contract,
         isLoading,
         isConnected,
         provider,
@@ -119,7 +101,7 @@ export const Provider = ({ children }) => {
         web3Error,
         name,
         chainId,
-        actions: { connect, listSnaps },
+        actions: { connect },
       }}
     >
       {children}

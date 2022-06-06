@@ -46,7 +46,7 @@ const Account = () => {
         : <Avvvatars value={address} style="shape" size={30} />
       }
       </JazziconWrap>
-      <p>{ens || formatAddress(address)}</p>
+      <p style={{color:'white'}}>{ens || formatAddress(address)}</p>
     </Wrap>
   );
 }
