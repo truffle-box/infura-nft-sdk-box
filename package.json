@@ -8,7 +8,6 @@
   "scripts": {
     "dev": "npx tsnd --respawn scripts/xyz.ts"
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/truffle-box/nft-api-box.git"
@@ -30,8 +29,10 @@
   "homepage": "https://github.com/truffle-box/nft-api-box#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0",
+    "@truffle/preserve-fs": "^0.2.8",
+    "@truffle/preserve-to-ipfs": "^0.2.9",
     "consensys-sdk": "git@github.com:ConsenSys/consensys-sdk.git",
-    "npm": "^8.10.0", 
+    "npm": "^8.10.0",
     "ts-node": "^10.7.0"
   },
   "devDependencies": {
