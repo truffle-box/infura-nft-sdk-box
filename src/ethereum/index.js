@@ -76,7 +76,7 @@ export const Provider = ({ children }) => {
     }
   }, [connectUser, dispatch]);
 
-  const { isLoading, isConnected, name, chainId, provider, user, sdk } =
+  const { isLoading, isConnected, name, chainId, provider, user, sdk, contract } =
     state;
 
   const connect = async () => {
@@ -102,6 +102,7 @@ export const Provider = ({ children }) => {
         name,
         chainId,
         sdk,
+        contract,
         actions: { connect },
       }}
     >

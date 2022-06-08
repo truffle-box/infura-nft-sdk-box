@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import CategorySelector from "../components/molecules/CategorySelector";
 import { LabeledInput as Input } from "../components/atoms/Input";
 import { EthProvider } from "../ethereum";
+import { TEMPLATES } from "@infura/sdk";
 
 const LoadContract = () => {
   const { sdk, dispatch } = useContext(EthProvider);
@@ -13,12 +14,15 @@ const LoadContract = () => {
   const templates = ["Unlimited", "UserMintable"];
 
   const wenSubmit = async (e) => {
+    if (!selectedCategory) {
+      alert('Please select a template');
+      return;
+    }
     e.preventDefault();
     const contract = await sdk.loadContract({
-      template: 'ERC721Mintable',
+      template: TEMPLATES.ERC721Mintable,
       contractAddress: selectedContract,
     });
-    console.log(contract);
     dispatch({
       type: "CONNECTED_CONTRACT",
       payload: {
@@ -34,14 +38,15 @@ const LoadContract = () => {
           <h2>Load an existing Contract</h2>
           <p>Select one of the templates below to load an existing contract</p>
         </legend>
-        <CategorySelector
-          categories={templates}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-        />
+        
       </fieldset>
     <fieldset>
     <form action="" ref={formRef} onSubmit={wenSubmit}>
+      <CategorySelector
+        categories={templates}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+      />
       <Input
         type="text"
         placeholder="0x..."

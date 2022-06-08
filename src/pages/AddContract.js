@@ -16,13 +16,14 @@ const AddContract = () => {
           <h2>Deploy a new Contract</h2>
           <p>Select one of the templates below to create a new contract</p>
         </legend>
-        <CategorySelector
+        
+      </fieldset>
+      <fieldset>
+      <CategorySelector
           categories={templates}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-      </fieldset>
-      <fieldset>
         {selectedCategory === "Unlimited" && <ERC721MintableForm />}
         {selectedCategory === "UserMintable" && <ERC721UserMintableForm />}
       </fieldset>

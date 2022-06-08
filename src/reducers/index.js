@@ -41,17 +41,6 @@ export const reducer = (state, action) => {
       return;
     }
 
-    case "TRANSACTION_UPDATE": {
-      state.user.balance = action.payload.balance;
-      state.user.allowance = action.payload.allowance;
-      return;
-    }
-
-    case "SET_SNAPS": {
-      state.snaps = action.payload.snaps;
-      return;
-    }
-
     default:
       break;
   }
