@@ -28,26 +28,26 @@ const ERC721UserMintableForm = () => {
       name: "symbol",
     },
     {
-        label: "Base URI",
-        description: "(base URI with information)",
-        placeholder: "myapp.com/metadata",
-        type: "text",
-        name: "base_uri",
-      },
-      {
-        label: "Max Supply",
-        description: "(maximum supply for your token)",
-        placeholder: "",
-        type: "number",
-        name: "max_supply",
-      },
-      {
-        label: "Mint Price",
-        description: "(price of token at mint)",
-        placeholder: "",
-        type: "number",
-        name: "mint_price",
-      },
+      label: "Base URI",
+      description: "(base URI with information)",
+      placeholder: "myapp.com/metadata",
+      type: "text",
+      name: "base_uri",
+    },
+    {
+      label: "Max Supply",
+      description: "(maximum supply for your token)",
+      placeholder: "",
+      type: "number",
+      name: "max_supply",
+    },
+    {
+      label: "Mint Price",
+      description: "(price of token at mint)",
+      placeholder: "",
+      type: "number",
+      name: "mint_price",
+    },
     {
       label: "Contract URI",
       description: "(link)",
@@ -61,7 +61,7 @@ const ERC721UserMintableForm = () => {
     const sdk = {}; // TODO: Add Infura SDK
 
     e.preventDefault();
-    console.log('submitting via sdk');
+    console.log("submitting via sdk");
     // try {
     //   await sdk.deploy(
     //     selectedName,
@@ -84,11 +84,11 @@ const ERC721UserMintableForm = () => {
         setSelectedBaseUri(value);
         return;
       case "max_suuply":
-            setSelectedMaxsupply(value);
-            return;
+        setSelectedMaxsupply(value);
+        return;
       case "symbol":
-            setSelectedPrice(value);
-            return;
+        setSelectedPrice(value);
+        return;
       case "contract_uri":
         setSelectedContractUri(value);
         return;
@@ -111,7 +111,7 @@ const ERC721UserMintableForm = () => {
               onChange={(event) => setValue(input.name, event.target.value)}
             />
           ))}
-          <input type="submit" value="Deploy"/>
+          <input type="submit" value="Deploy" />
         </fieldset>
       </form>
     </>

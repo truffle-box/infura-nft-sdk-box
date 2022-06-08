@@ -1,10 +1,8 @@
-import React, { useContext } from 'react';
-
-import Avvvatars from 'avvvatars-react';
-import styled from 'styled-components';
-
+import React, { useContext } from "react";
+import Avvvatars from "avvvatars-react";
+import styled from "styled-components";
 import { EthProvider } from "../../ethereum";
-import { formatAddress } from '../../utils';
+import { formatAddress } from "../../utils";
 
 const Wrap = styled.div`
 	background-color: #282828;
@@ -24,7 +22,7 @@ const Wrap = styled.div`
 
 const JazziconWrap = styled.div`
   border-radius: 50%;
-	padding: 2px;
+  padding: 2px;
   height: 30px;
   width: 30px;
   img {
@@ -40,15 +38,16 @@ const Account = () => {
 
   return (
     <Wrap>
-			<JazziconWrap>
-        {avatar
-        ? <img src={avatar} alt='ENS Avatar'/>
-        : <Avvvatars value={address} style="shape" size={30} />
-      }
+      <JazziconWrap>
+        {avatar ? (
+          <img src={avatar} alt="ENS Avatar" />
+        ) : (
+          <Avvvatars value={address} style="shape" size={30} />
+        )}
       </JazziconWrap>
-      <p style={{color:'white'}}>{ens || formatAddress(address)}</p>
+      <p style={{ color: "white" }}>{ens || formatAddress(address)}</p>
     </Wrap>
   );
-}
+};
 
 export default Account;

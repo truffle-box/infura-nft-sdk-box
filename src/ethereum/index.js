@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useCallback } from "react";
-// import MetamaskSnapsExplorer from "../contracts/MetamaskSnapsExplorer.json";
 import { ethers } from "ethers";
 import { useImmerReducer } from "use-immer";
 import { initialState } from "./initialState.js";
 import { reducer } from "../reducers";
+import { Auth, SDK } from "@infura/sdk";
 
 export const EthProvider = createContext(initialState);
 
@@ -37,6 +37,13 @@ export const Provider = ({ children }) => {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
+        const auth = new Auth({
+          privateKey: '135cbd17478a389c37b2ed4c1c232344ff386e283c3d09ed85f6fe0ea41164e2',
+          projectId: process.env.REACT_APP_INFURA_PROJECT_ID,
+          secretId: process.env.REACT_APP_INFURA_PROJECT_SECRET,
+          chainId,
+        });
+        const sdk = new SDK(auth);
         setAccount(provider, accounts, name, chainId);
         dispatch({
           type: "CONNECTED_PROVIDER",
@@ -45,6 +52,7 @@ export const Provider = ({ children }) => {
             signer,
             name,
             chainId,
+            sdk
           },
         });
       }
@@ -68,15 +76,8 @@ export const Provider = ({ children }) => {
     }
   }, [connectUser, dispatch]);
 
-  const {
-    isLoading,
-    isConnected,
-    name,
-    chainId,
-    provider,
-    user,
-    web3Error,
-  } = state;
+  const { isLoading, isConnected, name, chainId, provider, user, sdk } =
+    state;
 
   const connect = async () => {
     try {
@@ -98,9 +99,9 @@ export const Provider = ({ children }) => {
         isConnected,
         provider,
         user,
-        web3Error,
         name,
         chainId,
+        sdk,
         actions: { connect },
       }}
     >

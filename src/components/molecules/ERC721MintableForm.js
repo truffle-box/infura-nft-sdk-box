@@ -37,7 +37,7 @@ const ERC721MintableForm = () => {
     const sdk = {}; // TODO: Add Infura SDK
 
     e.preventDefault();
-    console.log('submitting via sdk');
+    console.log("submitting via sdk");
     // try {
     //   await sdk.deploy(
     //     selectedName,
@@ -78,7 +78,7 @@ const ERC721MintableForm = () => {
               onChange={(event) => setValue(input.name, event.target.value)}
             />
           ))}
-          <input type="submit" value="Deploy"/>
+          <input type="submit" value="Deploy" />
         </fieldset>
       </form>
     </>

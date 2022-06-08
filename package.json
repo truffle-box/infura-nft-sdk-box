@@ -21,6 +21,7 @@
     "url": "https://github.com/truffle-box/nft-api-boxissues"
   },
   "dependencies": {
+    "@infura/sdk": "^27.0.0",
     "@openzeppelin/contracts": "^4.6.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
@@ -31,6 +32,7 @@
     "husky": "^8.0.1",
     "immer": "^9.0.14",
     "polished": "^4.2.2",
+    "prettier": "^2.6.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
@@ -43,7 +45,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sit-pretty": "prettier --write './src/**/*.js'",
+    "lint:react": "eslint './src/**/*.js'",
+    "lint:misc": "prettier --check './src/**/*.js'"
   },
   "eslintConfig": {
     "extends": [
