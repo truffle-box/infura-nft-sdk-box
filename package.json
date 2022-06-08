@@ -6,7 +6,7 @@
     "test": "test"
   },
   "scripts": {
-    "dev": "npx tsnd --respawn scripts/xyz.ts"
+    "preserve": "truffle preserve ./ipfs --ipfs --environment infura"
   },
   "repository": {
     "type": "git",
