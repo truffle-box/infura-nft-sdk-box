@@ -21,7 +21,7 @@
     "url": "https://github.com/truffle-box/nft-api-boxissues"
   },
   "dependencies": {
-    "@infura/sdk": "^27.0.0",
+    "@infura/sdk": "^0.3.0",
     "@openzeppelin/contracts": "^4.6.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",

@@ -6,6 +6,7 @@ import Main from "./pages/Main";
 import AddContract from "./pages/AddContract";
 import LoadContract from "./pages/LoadContract";
 import Gallery from "./pages/Gallery";
+import Contract from "./pages/Contract";
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/add-contract" element={<AddContract />} />
           <Route path="/load-contract" element={<LoadContract />} />
+          <Route path="/contract" element={<Contract />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
