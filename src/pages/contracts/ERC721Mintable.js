@@ -9,6 +9,7 @@ const Wrap = styled.button`
   align-items: center;
   gap: 0.5em;
   width: 300px;
+  height: 50px;
   img {
     height: 10px;
   }
@@ -18,7 +19,7 @@ const ERC721Mintable = () => {
     const { contract, sdk } = useContext(EthProvider);
 
     const royaltyInfo = async () => {
-        const info = await contract.royaltyInfo({tokenId: 0, sellPrice: 10000});
+        const info = await contract.royaltyInfo({tokenId: 1, sellPrice: 10000});
         alert(info);
     }
 
