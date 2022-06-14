@@ -6,6 +6,7 @@ import Main from "./pages/Main";
 import AddContract from "./pages/AddContract";
 import LoadContract from "./pages/LoadContract";
 import Gallery from "./pages/Gallery";
+import './App.css'
 import Contract from "./pages/Contract";
 
 const App = () => {
