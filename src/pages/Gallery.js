@@ -1,9 +1,11 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { EthProvider } from "../ethereum";
+import { MOCK_DATA } from './mocksdk';
 
 const Gallery = () => {
     const { provider, sdk, user } = useContext(EthProvider);
     const { address } = user;
+    const [nfts, setNfts] = useState([]);
 
     const checkConnection = () => {
         switch (true) {
@@ -19,12 +21,12 @@ const Gallery = () => {
 
     const listNFTs = useCallback(async () => {
         try {
-            const nfts = await sdk.getNFTs({ publicAddress: address });
-            console.log(nfts);
+          const data = MOCK_DATA;
+          setNfts(data.assets);
         } catch (e) {
             console.log(e);
         }
-    });
+    }, [sdk]);
 
     useEffect(() => {
         if (sdk) {
