@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from "react";
 import { LabeledInput as Input } from "../atoms/Input";
 import { EthProvider } from "../../ethereum";
-import { TEMPLATES } from '@infura/sdk';
+import { TEMPLATES } from "@infura/sdk";
 
 const ERC721MintableForm = () => {
   const { dispatch, sdk } = useContext(EthProvider);
@@ -42,14 +42,14 @@ const ERC721MintableForm = () => {
         params: {
           name: selectedName,
           symbol: selectedSymbol,
-          contractURI: selectedContractUri
-        }
+          contractURI: selectedContractUri,
+        },
       });
       dispatch({
         type: "CONNECTED_CONTRACT",
         payload: {
-          contract
-        }
+          contract,
+        },
       });
     } catch (e) {
       console.log(e);

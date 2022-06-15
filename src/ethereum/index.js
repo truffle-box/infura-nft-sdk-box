@@ -41,7 +41,7 @@ export const Provider = ({ children }) => {
           projectId: process.env.REACT_APP_INFURA_PROJECT_ID,
           secretId: process.env.REACT_APP_INFURA_PROJECT_SECRET,
           chainId,
-          provider: window.ethereum
+          provider: window.ethereum,
         });
         const sdk = new SDK(auth);
         setAccount(provider, accounts, name, chainId);
@@ -52,7 +52,7 @@ export const Provider = ({ children }) => {
             signer,
             name,
             chainId,
-            sdk
+            sdk,
           },
         });
       }
@@ -76,8 +76,16 @@ export const Provider = ({ children }) => {
     }
   }, [connectUser, dispatch]);
 
-  const { isLoading, isConnected, name, chainId, provider, user, sdk, contract } =
-    state;
+  const {
+    isLoading,
+    isConnected,
+    name,
+    chainId,
+    provider,
+    user,
+    sdk,
+    contract,
+  } = state;
 
   const connect = async () => {
     try {
