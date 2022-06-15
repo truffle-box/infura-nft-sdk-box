@@ -17,11 +17,51 @@ const Wrap = styled.button`
 
 const ERC721Mintable = () => {
     const { contract} = useContext(EthProvider);
-    console.log(contract);
+
+    const addMinter = async () => {
+        try {
+            contract.addMinter({
+                publicAddress: '',
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const removeMinter = async () => {
+        try {
+            contract.removeMinter({
+                publicAddress: '',
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    const mint = async () => {
+        try {
+            contract.mint({
+                publicAddress: '',
+                tokenURI: '',
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     const royaltyInfo = async () => {
         const info = await contract.royaltyInfo({tokenId: 1, sellPrice: 10000});
         alert(info);
+    }
+
+    const setContractURI = async () => {
+        try {
+            contract.setContractURI({
+                contractURI: '',
+            });
+        } catch (e) {
+            console.log(e);
+        }
     }
 
     return (

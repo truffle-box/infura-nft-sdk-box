@@ -1,13 +1,13 @@
 import React from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import NoMatch from "./pages/NoMatch";
 import Layout from "./pages/Layout";
 import Main from "./pages/Main";
+import Gallery from "./pages/Gallery";
+import "./App.css";
 import AddContract from "./pages/AddContract";
 import LoadContract from "./pages/LoadContract";
-import Gallery from "./pages/Gallery";
-import './App.css'
 import Contract from "./pages/Contract";
+import NoMatch from "./pages/NoMatch";
 
 const App = () => {
   return (
