@@ -16,7 +16,8 @@ const Wrap = styled.button`
 `;
 
 const ERC721Mintable = () => {
-    const { contract, sdk } = useContext(EthProvider);
+    const { contract} = useContext(EthProvider);
+    console.log(contract);
 
     const royaltyInfo = async () => {
         const info = await contract.royaltyInfo({tokenId: 1, sellPrice: 10000});
