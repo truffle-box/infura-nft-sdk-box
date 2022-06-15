@@ -1,0 +1,123 @@
+
+.item .info .description {
+    overflow: scroll;
+    min-height: 100px;
+    max-height: 150px;
+    background: aliceblue;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.description {
+    overflow: scroll;
+    display: block;
+    margin: 0;
+    font-weight: 400;
+    font-size: x-small;
+}
+
+.description li {
+    padding: 3px 0;
+}
+
+.wrapper {
+    margin-top: 50px;
+}
+
+.container {
+    width: 100%;
+    height: 600px;
+}
+
+.item {
+    display: inline-block;
+    background: #eeeeee;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    width: 250px;
+    opacity: 1;
+}
+
+.masonrygrid.horizontal .item {
+    width: auto;
+    height: 250px;
+}
+
+.item .thumbnail {
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.videoThumbnail {
+    display: block;
+    height: 100%;
+    width: 100%;
+    min-width: 100%;
+    min-height: 200px;
+}
+
+.item .thumbnail .image{
+    display: block;
+    max-height: 400px;
+    min-height: 250px;
+}
+
+.item .thumbnail img {
+    width: 100%;
+    border-radius: 8px;
+}
+
+.masonrygrid.horizontal .item .thumbnail img {
+    width: auto;
+    height: 210px;
+}
+
+.item .info {
+    margin-top: 10px;
+}
+
+.item .info .title{
+    display: block;
+    border-radius: 8px;
+    padding: 4px;
+    background: aliceblue;
+    font-weight: bold;
+    min-height: 50px;
+    max-height: 80px;
+    overflow: scroll;
+}
+
+
+.item.animate {
+    transition: opacity ease 1s;
+    transition-delay: 0.2s;
+    opacity: 1;
+}
+
+.placeholder {
+    width: 250px;
+    border-radius: 5px;
+    background: #eee;
+    height: 250px;
+}
+
+
+.loading {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.button-area {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    height: 50px;
+    z-index: 1;
+}
