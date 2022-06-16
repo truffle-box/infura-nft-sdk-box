@@ -9,6 +9,14 @@ module.exports = {
     dashboard: {}
   },
 
+  environments: {
+    infura: {
+      ipfs: {
+        address: "https://ipfs.infura.io:5001"
+      }
+    }
+  },
+
   compilers: {
     solc: {
       version: "0.8.13",
@@ -17,5 +25,10 @@ module.exports = {
 
   db: {
     enabled: false,
-  }
+  },
+
+  plugins: [
+    "@truffle/preserve-fs",
+    "@truffle/preserve-to-ipfs"
+  ]
 };

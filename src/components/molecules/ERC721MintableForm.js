@@ -1,9 +1,10 @@
 import React, { useContext, useRef, useState } from "react";
 import { LabeledInput as Input } from "../atoms/Input";
 import { EthProvider } from "../../ethereum";
+import { TEMPLATES } from "@infura/sdk";
 
 const ERC721MintableForm = () => {
-  const { signer } = useContext(EthProvider);
+  const { dispatch, sdk } = useContext(EthProvider);
   const [selectedName, setSelectedName] = useState("");
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [selectedContractUri, setSelectedContractUri] = useState("");
@@ -34,19 +35,25 @@ const ERC721MintableForm = () => {
   ];
 
   const wenSubmit = async (e) => {
-    const sdk = {}; // TODO: Add Infura SDK
-
     e.preventDefault();
-    console.log("submitting via sdk");
-    // try {
-    //   await sdk.deploy(
-    //     selectedName,
-    //     selectedSymbol,
-    //     selectedContractUri,
-    //   );
-    // } catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      const contract = await sdk.deploy({
+        template: TEMPLATES.ERC721Mintable,
+        params: {
+          name: selectedName,
+          symbol: selectedSymbol,
+          contractURI: selectedContractUri,
+        },
+      });
+      dispatch({
+        type: "CONNECTED_CONTRACT",
+        payload: {
+          contract,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
   const setValue = (name, value) => {
     switch (name) {

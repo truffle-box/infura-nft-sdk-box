@@ -15,7 +15,7 @@ const LoadContract = () => {
 
   const wenSubmit = async (e) => {
     if (!selectedCategory) {
-      alert('Please select a template');
+      alert("Please select a template");
       return;
     }
     e.preventDefault();
@@ -26,8 +26,8 @@ const LoadContract = () => {
     dispatch({
       type: "CONNECTED_CONTRACT",
       payload: {
-        contract
-      }
+        contract,
+      },
     });
   };
 
@@ -38,26 +38,25 @@ const LoadContract = () => {
           <h2>Load an existing Contract</h2>
           <p>Select one of the templates below to load an existing contract</p>
         </legend>
-        
       </fieldset>
-    <fieldset>
-    <form action="" ref={formRef} onSubmit={wenSubmit}>
-      <CategorySelector
-        categories={templates}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-      />
-      <Input
-        type="text"
-        placeholder="0x..."
-        label="Contract Address"
-        description="This is the contract address previously deployed"
-        onChange={(event) => setSelectedContract(event.target.value)}
-      />
-    <input type="submit" value="Load"/>
-    </form>
-    </fieldset>
-  </>
+      <fieldset>
+        <form action="" ref={formRef} onSubmit={wenSubmit}>
+          <CategorySelector
+            categories={templates}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+          />
+          <Input
+            type="text"
+            placeholder="0x..."
+            label="Contract Address"
+            description="This is the contract address previously deployed"
+            onChange={(event) => setSelectedContract(event.target.value)}
+          />
+          <input type="submit" value="Load" />
+        </form>
+      </fieldset>
+    </>
   );
 };
 

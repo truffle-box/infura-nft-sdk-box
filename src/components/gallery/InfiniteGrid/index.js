@@ -12,20 +12,25 @@ function getItems(nextGroupKey, count) {
   const nextKey = nextGroupKey * count;
 
   const assets = MOCK_DATA.assets;
+  console.log(assets.length);
 
   for (let i = 0; i < count; ++i) {
     const daKey = nextKey + i;
-    if (assets.length < daKey) {return;}
+    console.log(daKey);
+    if (assets.length < daKey) {
+      return;
+    }
     nextItems.push({
-      groupKey: nextGroupKey, key: daKey,
-      asset: assets[daKey]
+      groupKey: nextGroupKey,
+      key: daKey,
+      asset: assets[daKey],
     });
   }
   console.log("getItems:", { nextGroupKey, count, nextKey, nextItems });
   return nextItems;
 }
 
-const Item = ({ num, asset }) =>
+const Item = ({ num, asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
       <div className="thumbnail">
@@ -37,10 +42,10 @@ const Item = ({ num, asset }) =>
         <div className="description">Desc: {asset?.metadata?.description}</div>
       </div>
     </div>
-  </Suspense>;
+  </Suspense>
+);
 
 const RenderNFTImage = ({ url, mimeType }) => {
-
   const [isImage, setIsImage] = useState(false);
   const [isVideo, setIsVideo] = useState(false);
   const [isSvg, setIsSvg] = useState(false);
@@ -57,21 +62,39 @@ const RenderNFTImage = ({ url, mimeType }) => {
       setIsVideo(true);
       setIsSvg(false);
     }
-    console.log("Rendering Image: ", { isImage, isVideo, isSvg, url, mimeType });
+    console.log("Rendering Image: ", {
+      isImage,
+      isVideo,
+      isSvg,
+      url,
+      mimeType,
+    });
   }, [url, mimeType]);
 
   return (
     <>
       {isImage && <img src={url} />}
-      {isSvg && <div
-        className="svgImage"
-        style={{
-          background: url,
-          width: "100%",
-          height: 500
-        }}>SVG</div>
-      }
-      {isVideo && <video className="videoThumbnail" src={url} loop={true} autoPlay={true} controls={true} />}
+      {isSvg && (
+        <div
+          className="svgImage"
+          style={{
+            background: url,
+            width: "100%",
+            height: 500,
+          }}
+        >
+          SVG
+        </div>
+      )}
+      {isVideo && (
+        <video
+          className="videoThumbnail"
+          src={url}
+          loop={true}
+          autoPlay={true}
+          controls={true}
+        />
+      )}
       {!isImage && !isVideo && !isSvg && <>NO IMAGE</>}
     </>
   );
@@ -103,53 +126,58 @@ const NFTImage = ({ url = "" }) => {
       setRealUrl(newUrl);
       // console.log("RealUrl", { url, realUrl, newUrl });
     }
-    processUrlHead(newUrl).catch(e => {
+    processUrlHead(newUrl).catch((e) => {
       console.log("Error: ", e);
     });
   }, [url]);
 
-  const processUrlHead = async (headUrl) => axios.head(headUrl)
-                                                 .then((h) => {
-                                                   setMimeType(h.headers["content-type"]);
-                                                   // console.log("HeadVals: ", { headUrl, h });
-                                                   return h;
-                                                 }, (reason) => {
-                                                   console.log("Error:", { headUrl, reason });
-                                                 });
+  const processUrlHead = async (headUrl) =>
+    axios.head(headUrl).then(
+      (h) => {
+        setMimeType(h.headers["content-type"]);
+        // console.log("HeadVals: ", { headUrl, h });
+        return h;
+      },
+      (reason) => {
+        console.log("Error:", { headUrl, reason });
+      }
+    );
 
   const renderCallback = useCallback(() => {
     return <RenderNFTImage url={realUrl} mimeType={mimeType} />;
   }, [realUrl, mimeType]);
 
-  return (
-    <div className="image">
-      {renderCallback()}
-    </div>
-  );
+  return <div className="image">{renderCallback()}</div>;
 };
 
 const GalleryView = () => {
-  const [items, setItems] = React.useState(() => getItems(0, 10));
+  const [items, setItems] = React.useState(() => getItems(0, 1));
 
-  return <MasonryInfiniteGrid
-    className="container"
-    gap={10}
-    align={"justify"}
-    onRequestAppend={(e) => {
-      const nextGroupKey = (+e.groupKey || 0) + 1;
-      console.log("onRequestAppend:", { e, nextGroupKey, items });
+  return (
+    <MasonryInfiniteGrid
+      className="container"
+      gap={10}
+      align={"justify"}
+      onRequestAppend={(e) => {
+        const nextGroupKey = (+e.groupKey || 0) + 1;
+        console.log("onRequestAppend:", { e, nextGroupKey, items });
 
-      setItems([
-        ...items,
-        ...getItems(nextGroupKey, 10)
-      ]);
-    }}
-    onRenderComplete={(e) => {
-      console.log(e);
-    }}
-  >
-    {items.map((item) => <Item data-grid-groupkey={item.groupKey} key={item.key} num={item.key} asset={item.asset} />)}
-  </MasonryInfiniteGrid>;
+        setItems([...items, ...getItems(nextGroupKey, 1)]);
+      }}
+      onRenderComplete={(e) => {
+        console.log(e);
+      }}
+    >
+      {items.map((item) => (
+        <Item
+          data-grid-groupkey={item.groupKey}
+          key={item.key}
+          num={item.key}
+          asset={item.asset}
+        />
+      ))}
+    </MasonryInfiniteGrid>
+  );
 };
 
 export default GalleryView;

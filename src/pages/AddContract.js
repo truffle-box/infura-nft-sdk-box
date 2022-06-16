@@ -16,10 +16,9 @@ const AddContract = () => {
           <h2>Deploy a new Contract</h2>
           <p>Select one of the templates below to create a new contract</p>
         </legend>
-        
       </fieldset>
       <fieldset>
-      <CategorySelector
+        <CategorySelector
           categories={templates}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
