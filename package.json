@@ -2,6 +2,10 @@
   "name": "infura-sdk-box",
   "version": "0.1.0",
   "private": true,
+  "description": "NFT all the things!",
+  "directories": {
+    "test": "test"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/truffle-box/nft-api-box.git"
@@ -31,6 +35,11 @@
     "axios": "^0.27.2",
     "eslint": "^8.16.0",
     "ethers": "^5.6.8",
+    "@truffle/preserve-fs": "^0.2.8",
+    "@truffle/preserve-to-ipfs": "^0.2.9"
+  },
+  "devDependencies": {
+    "eslint": "^8.15.0",
     "husky": "^8.0.1",
     "immer": "^9.0.14",
     "polished": "^4.2.2",
@@ -51,7 +60,8 @@
     "eject": "react-scripts eject",
     "sit-pretty": "prettier --write './src/**/*.js'",
     "lint:react": "eslint './src/**/*.js'",
-    "lint:misc": "prettier --check './src/**/*.js'"
+    "lint:misc": "prettier --check './src/**/*.js'",
+    "preserve": "truffle preserve ./ipfs --ipfs --environment infura"
   },
   "eslintConfig": {
     "extends": [

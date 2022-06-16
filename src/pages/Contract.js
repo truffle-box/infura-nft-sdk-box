@@ -7,7 +7,7 @@ const Contract = () => {
   const { contract } = useContext(EthProvider);
 
   return (
-    <>{"ERC721Mintable" === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
+    <>{contract.getTemplate() === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
   );
 };
 
