@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import mmbrand from "../../assets/mm_brand.svg";
+import infurabrand from "../../assets/infura_brand.svg";
 import Button from "../atoms/Button";
 import { EthProvider } from "../../ethereum";
 import Account from "../atoms/Account";
@@ -23,7 +23,7 @@ const Header = () => {
 
   return (
     <header>
-      <img src={mmbrand} alt="MetaMask" />
+      <img src={infurabrand} alt="Infura" style={{"width": "3rem", "marginLeft": "1rem"}} />
       {checkConnection()}
     </header>
   );

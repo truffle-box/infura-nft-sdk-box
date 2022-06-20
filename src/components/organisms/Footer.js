@@ -1,7 +1,7 @@
 import React from "react";
 
 import Anchor from "../atoms/Anchor";
-import mmbrand from "../../assets/mm_brand.svg";
+import infurabrand from "../../assets/infura_brand.svg";
 
 const learnMore = [
   {
@@ -40,11 +40,11 @@ const connect = [
 const Footer = () => {
   return (
     <footer>
-      <img src={mmbrand} alt="MetaMask" />
+      <img src={infurabrand} alt="Infura" style={{"width": "3rem", "margin": "1rem"}} />
       <div>
         <h3>Need Help?</h3>
-        <Anchor link="mailto:support@metamask.io" name="MetaMask Support">
-          support@metamask.io
+        <Anchor link="mailto:support@infura.io" name="Infura Support">
+          support@infura.io
         </Anchor>
       </div>
 
@@ -65,7 +65,7 @@ const Footer = () => {
         ))}
       </div>
       <p>
-        &copy; {new Date().getFullYear()} MetaMask &#9679; A ConsenSys Formation
+        &copy; {new Date().getFullYear()} Infura &#9679; A ConsenSys Formation
       </p>
     </footer>
   );
