@@ -1,5 +1,5 @@
-import React, { Suspense, useCallback, useEffect, useState } from "react";
-
+import React, { Suspense, useCallback, useEffect, useState, useContext } from "react";
+import { EthProvider } from "../../../ethereum";
 import { MasonryInfiniteGrid } from "@egjs/react-infinitegrid";
 import { MOCK_DATA } from "../mocksdk";
 import axios from "axios";
@@ -7,26 +7,26 @@ import { PuffLoader } from "react-spinners";
 
 import "./index.css";
 
-function getItems(nextGroupKey, count) {
+function getItems(nextGroupKey, count, assets) {
+  // debugger;
   const nextItems = [];
-  const nextKey = nextGroupKey * count;
+  // const nextKey = nextGroupKey * count;
 
-  const assets = MOCK_DATA.assets;
-  console.log(assets.length);
+  // const assets = MOCK_DATA.assets;
+  // console.log(assets.length);
 
-  for (let i = 0; i < count; ++i) {
-    const daKey = nextKey + i;
-    console.log(daKey);
-    if (assets.length < daKey) {
-      return;
-    }
+  for (let i = 0; i < assets.length; ++i) {
+    // const daKey = nextKey + i;
+    // console.log(daKey);
+    // if (assets.length < daKey) {
+    //   return;
+    // }
+    console.log(assets[i].metadata);
     nextItems.push({
-      groupKey: nextGroupKey,
-      key: daKey,
-      asset: assets[daKey],
+      asset: assets[i].metadata,
     });
   }
-  console.log("getItems:", { nextGroupKey, count, nextKey, nextItems });
+  // console.log("getItems:", { nextGroupKey, count, nextKey, nextItems });
   return nextItems;
 }
 
@@ -34,12 +34,12 @@ const Item = ({ num, asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
       <div className="thumbnail">
-        <NFTImage url={asset?.metadata?.image} />
+        <img src={asset?.image} alt="" />
       </div>
       <div className="info">
-        <div className="title">{asset?.metadata?.name}</div>
+        <div className="title">{asset?.name}</div>
         <audio controls>
-            <source src={asset?.metadata?.animation_url} type="audio/mpeg" />
+            <source src={asset?.animation_url} type="audio/mpeg" />
         </audio>
       </div>
     </div>
@@ -152,33 +152,41 @@ const NFTImage = ({ url = "" }) => {
 };
 
 const GalleryView = () => {
-  const [items, setItems] = React.useState(() => getItems(0, 1));
+  const [items, setItems] = useState([]);
 
-  return (
-    <MasonryInfiniteGrid
-      className="container"
-      gap={10}
-      align={"justify"}
-      onRequestAppend={(e) => {
-        const nextGroupKey = (+e.groupKey || 0) + 1;
-        console.log("onRequestAppend:", { e, nextGroupKey, items });
+  const { sdk, contract } = useContext(EthProvider);
+  
+  const start = async () => {
+    const data = await sdk.getNFTs({
+      publicAddress: contract.contractAddress,
+      includeMetadata: true
+    });
 
-        setItems([...items, ...getItems(nextGroupKey, 1)]);
-      }}
-      onRenderComplete={(e) => {
-        console.log(e);
-      }}
-    >
-      {items.map((item) => (
-        <Item
-          data-grid-groupkey={item.groupKey}
-          key={item.key}
-          num={item.key}
-          asset={item.asset}
-        />
-      ))}
-    </MasonryInfiniteGrid>
-  );
+    const items = []
+    for (let i = 0; i < data.assets.length; ++i) {
+      console.log(data.assets[i].metadata);
+      items.push(data.assets[i].metadata);
+    }
+    setItems(items);
+  }
+
+  useEffect(() => {
+    start()
+  }, []);
+
+  return (<>
+      { items.length > 0 ?
+          items.map((item) => (
+            <Item
+              data-grid-groupkey={item.groupKey}
+              key={item.key}
+              num={item.key}
+              asset={item}
+            />)
+          ) :
+          (<div>Loading...</div>)
+      }
+      </>);
 };
 
 export default GalleryView;
