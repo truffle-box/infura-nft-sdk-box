@@ -1,22 +1,25 @@
-# NFT API 🤖
+# Infura SDK box 🤖
 
-NFT all the things!
+NFT all the things wtih the [Infura NFT SDK](https://www.npmjs.com/package/@infura/sdk).
 
-## Installation
+## Installation & Setup
 
 ```bash
 $ npm i
 ```
 
-## Usage
+## Running
 
-This boxes comprises of a collections of scripts, assets, and accompanying documentation to help you get start with Infura's NFT API. To get started you'll need to have an [Infura](https://infura.io/) account and your `accountAddress` and `key`.
-
-### Mint
-
-```bash
-$ npx tsnd --respawn scripts/xyz.ts
 ```
+$ npm run start
+``` 
+
+## Minting
+
+REACT_APP_INFURA_PROJECT_ID=...
+REACT_APP_INFURA_PROJECT_SECRET=...
+
+ipfs://bafybeibrwgfgcioqapfpgok3xceblfrsfxmnjhnb5wogmmsfxgvd3rlqm4
 
 ## Support
 

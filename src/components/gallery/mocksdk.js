@@ -11,12 +11,11 @@ export const MOCK_DATA = {
       supply: "1",
       type: "ERC721",
       metadata: {
-        description: "Goblin funny burp",
+        description: "Kuchisabishii (Instrumental)",
         external_url: "tbd",
-        image: "https://img.seadn.io/files/a220ecaef78f8369056e034c5bc49af0.png",
-        name: "Goblin Burp",
-        animation_url:
-          "https://bafybeifyb657x65k47s37e7uhbjcvdgesmaxvjadabjz45laxrcimcbs2y.ipfs.infura-ipfs.io",
+        image: "https://bafybeigiywxygpfr55gxuje7q7kkqlea3epf7nmywpdeic7wkyujupghtq.ipfs.infura-ipfs.io/",
+        name: "Accouchement by Nuisance",
+        animation_url: "https://bafybeidn3lefyybhwtiwfhxfi6rfej2hmntojbxf6aktwv6ncqvttvl3jm.ipfs.infura-ipfs.io/",
       },
     },
     {
@@ -25,12 +24,11 @@ export const MOCK_DATA = {
       supply: "1",
       type: "ERC721",
       metadata: {
-        description: "Goblin cackle with reverb",
+        description: "Kuchisabishii (Instrumental)",
         external_url: "tbd",
-        image: "https://img.seadn.io/files/25fa812a94adc66b3499a58385c9ce44.png",
-        name: "Goblin Cackle",
-        animation_url:
-          "https://bafybeibv3sagzcclbwqxjmwmmq2rkmoen2okrrtjeanhjip2gxbtmrvdam.ipfs.infura-ipfs.io",
+        image: "https://bafybeie5y6ldvhfvx34rkmb7sa44xngsty3ugv4d77jpy2el6mbm4yo76i.ipfs.infura-ipfs.io/",
+        name: "Coruscant by Nuisance",
+        animation_url: "https://bafybeifg2mtvxnckdqxt3eg3gkku3laqpyaufovgya3gt4bigxpavctmhq.ipfs.infura-ipfs.io/",
       },
     },
     {
@@ -39,12 +37,12 @@ export const MOCK_DATA = {
       supply: "1",
       type: "ERC721",
       metadata: {
-        description: "Goblin heavy breathing",
+        description: "Kuchisabishii (Instrumental)",
         external_url: "tbd",
-        image: "https://img.seadn.io/files/24194471a52dfb48379ef4519f895b40.png",
-        name: "Goblin Breathing",
+        image: "https://bafybeic7zldfv6ryqhxo6c5lgvbkrmtqaks4nspyq4mkjuvcggaye5tvpi.ipfs.infura-ipfs.io/",
+        name: "Equinimity by Nuisance",
         animation_url:
-          "https://bafybeihdzwbqjjquakva2qpdhcmehumpgho5wyu6q6auvbjy6frd7moe5a.ipfs.infura-ipfs.io/",
+          "https://bafybeibm4agiguyzejzfaljlnru5vlfh2clmui2elynbg6he663gqv6ldi.ipfs.infura-ipfs.io/",
       },
     },
   ],

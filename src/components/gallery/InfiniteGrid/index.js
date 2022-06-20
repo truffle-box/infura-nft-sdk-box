@@ -37,9 +37,10 @@ const Item = ({ num, asset }) => (
         <NFTImage url={asset?.metadata?.image} />
       </div>
       <div className="info">
-        <div className="title">Name: {asset?.metadata?.name}</div>
-        <br />
-        <div className="description">Desc: {asset?.metadata?.description}</div>
+        <div className="title">{asset?.metadata?.name}</div>
+        <audio controls>
+            <source src={asset?.metadata?.animation_url} type="audio/mpeg" />
+        </audio>
       </div>
     </div>
   </Suspense>
