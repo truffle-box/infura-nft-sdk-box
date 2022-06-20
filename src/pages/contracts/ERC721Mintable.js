@@ -39,7 +39,7 @@ const StyleButton = styled.button`
 const ERC721Mintable = () => {
   const [metadataUri, setMetadataUri] = useState('');
 
-  const { contract } = useContext(EthProvider);
+  const { contract, user } = useContext(EthProvider);
 
   const addMinter = async () => {
     try {
@@ -65,7 +65,7 @@ const ERC721Mintable = () => {
 
     try {
       contract.mint({
-        publicAddress: contract.contractAddress,
+        publicAddress: user.address,
         tokenURI: metadataUri
       });
       setMetadataUri('');
