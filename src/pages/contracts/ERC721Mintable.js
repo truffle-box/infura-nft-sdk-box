@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { EthProvider } from "../../ethereum";
 import { tap, hover } from "../../theme/FramerVariants.js";
 import styled from "styled-components";
@@ -15,7 +15,30 @@ const Wrap = styled.button`
   }
 `;
 
+const StyledInput = styled.input`
+  width: 300px;
+  height: 50px;
+  border-radius: 1rem;
+  width: 50rem;
+  border: solid 0.1rem darkgray;
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
+`;
+
+const StyleButton = styled.button`
+  width: 300px;
+  height: 50px;
+  border-radius: 1rem;
+  display: block;
+  margin: 1rem 0;
+  background: #935DD7;
+  color: #fff;
+  font-weight: bold;
+`;
+
 const ERC721Mintable = () => {
+  const [metadataUri, setMetadataUri] = useState('');
+
   const { contract } = useContext(EthProvider);
 
   const addMinter = async () => {
@@ -39,17 +62,20 @@ const ERC721Mintable = () => {
   };
 
   const mint = async () => {
+
     try {
       contract.mint({
-        publicAddress: "",
-        tokenURI: "",
+        publicAddress: contract.contractAddress,
+        tokenURI: metadataUri
       });
+      setMetadataUri('');
     } catch (e) {
       console.log(e);
     }
   };
 
   const royaltyInfo = async () => {
+    console.log(contract)
     const info = await contract.royaltyInfo({ tokenId: 1, sellPrice: 10000 });
     alert(info);
   };
@@ -66,9 +92,10 @@ const ERC721Mintable = () => {
 
   return (
     <>
-      <Wrap onClick={() => royaltyInfo()} whileHover={hover} whileTap={tap}>
-        Royalty Info
-      </Wrap>
+      <h3>Mint a new NFT <small>({contract.contractAddress}</small>)</h3>
+      <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
+      <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
+      <StyleButton onClick={() => mint()}>Mint</StyleButton>
     </>
   );
 };

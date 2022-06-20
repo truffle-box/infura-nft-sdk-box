@@ -139,7 +139,7 @@ const GlobalStyles = createGlobalStyle`
 		width: 100%;
 		justify-self: stretch;
 		@media (min-width: 500px) {
-			display: grid;
+			display: inline;
 		}
 	}
 
