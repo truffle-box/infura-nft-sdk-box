@@ -11,7 +11,7 @@ const LoadContract = () => {
   const [selectedContract, setSelectedContract] = useState("");
   const formRef = useRef();
 
-  const templates = ["Unlimited", "UserMintable"];
+  const templates = ["Unlimited"];
 
   const wenSubmit = async (e) => {
     if (!selectedCategory) {

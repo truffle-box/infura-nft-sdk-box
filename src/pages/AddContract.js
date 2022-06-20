@@ -7,7 +7,7 @@ import ERC721UserMintableForm from "../components/molecules/ERC721UserMintableFo
 const AddContract = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const templates = ["Unlimited", "UserMintable"];
+  const templates = ["Unlimited"];
 
   return (
     <>
