@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { EthProvider } from "../../ethereum";
 import { tap, hover } from "../../theme/FramerVariants.js";
 import styled from "styled-components";
@@ -17,6 +17,11 @@ const Wrap = styled.button`
 
 const ERC721Mintable = () => {
   const { contract } = useContext(EthProvider);
+  const { user } =  useContext(EthProvider);
+  const [tokenUri, setTokenUri] = useState("");
+  const [contractAddress] = useState(contract.contractAddress);
+  const [mintHash, setMintHash] = useState("");
+
 
   const addMinter = async () => {
     try {
@@ -64,11 +69,41 @@ const ERC721Mintable = () => {
     }
   };
 
+  const inputsHandler = async (e) => {
+    console.log(e.target.value);
+    setTokenUri(e.target.value)
+  }
+
+  const mintToken = async (e) => {
+    const { hash } = await contract.mint({
+      publicAddress: user.address,
+      tokenURI: tokenUri,
+    });
+
+    setMintHash(hash);
+
+   }
+
+
   return (
     <>
+      <h3>contract address is : {contractAddress}</h3> 
+          
+
       <Wrap onClick={() => royaltyInfo()} whileHover={hover} whileTap={tap}>
         Royalty Info
       </Wrap>
+      <div>
+        <label>
+          tokenURI:
+        <input type="text" name="tokenURI" onChange={inputsHandler} />
+        </label>
+        <button onClick={mintToken}>Mint</button>
+
+        {
+          !!mintHash? <p>Mint Hash: {mintHash}</p> : null
+        }
+      </div>
     </>
   );
 };
