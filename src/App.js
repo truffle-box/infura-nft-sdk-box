@@ -8,6 +8,7 @@ import AddContract from "./pages/AddContract";
 import LoadContract from "./pages/LoadContract";
 import Contract from "./pages/Contract";
 import NoMatch from "./pages/NoMatch";
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const App = () => {
   return (

@@ -1,6 +1,6 @@
 import TopBanner from "../components/organisms/TopBanner";
 
-const Main = ({ snaps }) => {
+const Main = () => {
   return (
     <>
       <TopBanner />
