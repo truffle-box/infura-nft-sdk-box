@@ -90,7 +90,6 @@ const ERC721Mintable = () => {
         }
       ).finally(() => {
         setIsOpen(false);
-        setMetadataUri('');
       });
     } catch (e) {
       console.log(e);
@@ -105,12 +104,6 @@ const ERC721Mintable = () => {
       })
       .then((tx) => {
         setRespMsg(`Tx: ${tx}`)
-        // dispatch({
-        //   type: "CONNECTED_CONTRACT",
-        //   payload: {
-        //     contract
-        //   }
-        // });
       }, reason => {
         setRespMsg(`Reason: ${reason}`)
       });
@@ -125,7 +118,6 @@ const ERC721Mintable = () => {
         }
       ).finally(() => {
         setIsOpen(false);
-        setBps('');
       });
     } catch (e) {
       console.log(e);
