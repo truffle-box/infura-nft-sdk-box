@@ -1,11 +1,9 @@
 import TopBanner from "../components/organisms/TopBanner";
-import ModalDialog from "../components/organisms/ModalDialog";
 
-const Main = ({ snaps }) => {
+const Main = () => {
   return (
     <>
       <TopBanner />
-      <ModalDialog />
     </>
   );
 };

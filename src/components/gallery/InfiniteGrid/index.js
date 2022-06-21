@@ -1,6 +1,5 @@
-import React, { Suspense, useCallback, useEffect, useState, useContext } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import { EthProvider } from "../../../ethereum";
-import { MasonryInfiniteGrid } from "@egjs/react-infinitegrid";
 import { PuffLoader } from "react-spinners";
 
 import "./index.css";
@@ -14,7 +13,7 @@ const Item = ({ num, asset }) => (
       <div className="info">
         <div className="title">{asset?.name}</div>
         <audio controls>
-            <source src={asset?.animation_url} type="audio/mpeg" />
+          <source src={asset?.animation_url} type="audio/mpeg" />
         </audio>
       </div>
     </div>
@@ -130,38 +129,45 @@ const GalleryView = () => {
   const [items, setItems] = useState([]);
 
   const { sdk, contract } = useContext(EthProvider);
-  
-  const start = async () => {
+
+  // make this contingent on a valid contract address...
+  const start = async (contractAddress) => {
     const data = await sdk.getNFTs({
-      publicAddress: contract.contractAddress,
+      publicAddress: contractAddress,
       includeMetadata: true
     });
 
-    const items = []
+    const items = [];
     for (let i = 0; i < data.assets.length; ++i) {
       console.log(data.assets[i].metadata);
       items.push(data.assets[i].metadata);
     }
     setItems(items);
-  }
+  };
 
   useEffect(() => {
-    start()
-  }, []);
+    if (contract && contract.contractAddress) {
+      console.log("Working with contract", { contract });
+      start(contract.contractAddress);
+    } else {
+      console.log("Contract is null...");
+      setItems([]);
+    }
+  }, [start, contract]);
 
   return (<>
-      { items.length > 0 ?
-          items.map((item) => (
-            <Item
-              data-grid-groupkey={item.groupKey}
-              key={item.key}
-              num={item.key}
-              asset={item}
-            />)
-          ) :
-          (<div>Loading...</div>)
-      }
-      </>);
+    {items.length > 0 ?
+      items.map((item) => (
+        <Item
+          data-grid-groupkey={item.groupKey}
+          key={item.key}
+          num={item.key}
+          asset={item}
+        />)
+      ) :
+      (<div>Loading...</div>)
+    }
+  </>);
 };
 
 export default GalleryView;

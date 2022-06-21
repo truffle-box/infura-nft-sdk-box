@@ -1,6 +1,14 @@
 import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 
+/**
+ * DOCS: https://headlessui.dev/react/dialog#basic-example
+ *
+ * @param children - the elements inside the dialog. This will handle all the logic for opening/closing mostly.
+ * @param isOpen - flag to show/hide
+ * @param setIsOpen - function you call back in the parent.
+ * @returns {JSX.Element} - the modal element ready to rock.
+ */
 function ModalDialog({ children, isOpen, setIsOpen }) {
 
   return (<>

@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-
-import CategorySelector from "../components/molecules/CategorySelector";
-import ERC721MintableForm from "../components/molecules/ERC721MintableForm";
-import ERC721UserMintableForm from "../components/molecules/ERC721UserMintableForm";
 import CategorySelectorModal from "../components/molecules/CategorySelectorModal";
 
 const AddContract = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const templates = ["Unlimited", "UserMintable"];
+  const templates = ["Unlimited"];
 
   return (
     <>
