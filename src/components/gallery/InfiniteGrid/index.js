@@ -24,6 +24,8 @@ const GalleryView = () => {
   const [items, setItems] = useState([]);
 
   const { sdk, user } = useContext(EthProvider);
+  const { contract } = useContext(EthProvider);
+
 
   const start = useCallback(async (address) => {
     const data = await sdk.getNFTs({
@@ -31,11 +33,18 @@ const GalleryView = () => {
       includeMetadata: true
     });
 
-    const items = [];
-    for (let i = 0; i < data.assets.length; ++i) {
-      console.log(data.assets[i].metadata);
-      items.push(data.assets[i].metadata);
-    }
+    const items = data.assets.reduce((listNfts, nft) => {
+      if (contract && contract.contractAddress) {
+        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) { 
+          listNfts.push(nft.metadata) 
+          return listNfts
+        }
+        return [...listNfts];
+      }
+      listNfts.push(nft.metadata)
+      return listNfts;
+    },[]);
+
     setItems(items);
   }, [sdk]);
 
