@@ -6,34 +6,34 @@ import mmbrand from "../../assets/mm_brand.svg";
 const learnMore = [
   {
     name: "GitHub",
-    href: "",
+    href: "https://github.com/truffle-box/nft-api-box",
   },
   {
     name: "Privacy Policy",
-    href: "",
+    href: "https://consensys.net/privacy-policy/",
   },
   {
     name: "Terms of Service",
-    href: "",
+    href: "https://consensys.net/terms-of-use/",
   },
 ];
 
 const connect = [
   {
     name: "Contact",
-    href: "",
+    href: "https://consensys.net/contact/",
   },
   {
     name: "Support",
-    href: "",
+    href: "https://trufflesuite.com/community/",
   },
   {
     name: "Blog",
-    href: "",
+    href: "https://trufflesuite.com/blog/",
   },
   {
     name: "Twitter",
-    href: "",
+    href: "https://twitter.com/trufflesuite",
   },
 ];
 
@@ -42,14 +42,14 @@ const Footer = () => {
     <footer>
       <img src={mmbrand} alt="MetaMask" />
       <div>
-        <h3>Need Help?</h3>
+        <h3 style={{fontWeight: '900'}}>Need Help?</h3>
         <Anchor link="mailto:support@metamask.io" name="MetaMask Support">
           support@metamask.io
         </Anchor>
       </div>
 
       <div>
-        <h3>Learn More</h3>
+        <h3 style={{fontWeight: '900'}}>Learn More</h3>
         {learnMore.map((link, idx) => (
           <Anchor link={link.href} key={`Learn More Link no. ${idx}`}>
             {link.name}
@@ -57,7 +57,7 @@ const Footer = () => {
         ))}
       </div>
       <div>
-        <h3>Connect</h3>
+        <h3 style={{fontWeight: '900'}}>Connect</h3>
         {connect.map((link, idx) => (
           <Anchor link={link.href} key={`Learn More Link no. ${idx}`}>
             {link.name}

@@ -1,7 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import { EthProvider } from "../../ethereum";
-import { tap, hover } from "../../theme/FramerVariants.js";
 import styled from "styled-components";
+import { Dialog } from "@headlessui/react";
+import ModalDialog from "../../components/organisms/ModalDialog";
+import { toast } from "react-toastify";
 
 const Wrap = styled.button`
   display: flex;
@@ -37,65 +39,113 @@ const StyleButton = styled.button`
 `;
 
 const ERC721Mintable = () => {
+  const [modalTitle, setModalTitle] = useState('');
+  const [dialogText, setDialogText] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const [metadataUri, setMetadataUri] = useState('');
+  const [bps, setBps] = useState('');
+  const [respMsg, setRespMsg] = useState('');
 
-  const { contract, user } = useContext(EthProvider);
+  const { contract, user, name } = useContext(EthProvider);
 
-  const addMinter = async () => {
-    try {
-      contract.addMinter({
-        publicAddress: "",
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const removeMinter = async () => {
-    try {
-      contract.removeMinter({
-        publicAddress: "",
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const content = useCallback(() => {
+    return (
+      <>
+        <Dialog.Panel className="p-5 w-full max-w-screen-md rounded-2xl bg-purpleLight">
+          <Dialog.Title className="bg-purpleDark p-5 rounded-2xl mb-3 text-2xl text-white">Transaction Pending</Dialog.Title>
+          <div className="bg-white p-5 rounded-2xl ">
+            <Dialog.Description>
+              Your transaction is pending, you can view it on etherscan. <a href={dialogText}>Click to View</a>
+            </Dialog.Description>
+            {/* content */}
+            <button onClick={() => setIsOpen(false)}>Close</button>
+          </div>
+        </Dialog.Panel>
+      </>
+    );
+  }, []);
 
   const mint = async () => {
-
     try {
-      contract.mint({
+      const mintPromise = contract.mint({
         publicAddress: user.address,
         tokenURI: metadataUri
+      })
+      .then((tx) => {
+        setRespMsg(`Tx: ${tx}`)
+        setIsOpen(true);
+        const dialog = `https://${name}.etherscan.io/tx/${tx}`;
+        setDialogText(dialog);
+      }, reason => {
+        setRespMsg(`Reason: ${reason}`)
       });
-      setMetadataUri('');
+
+      toast.promise(
+        mintPromise,
+        {
+          position: "top-right",
+          pending: "🦄 - Minting Token",
+          success: `Minted 👌: ${respMsg}`,
+          error: `Error 🤯: ${respMsg}`
+        }
+      ).finally(() => {
+        setIsOpen(false);
+        setMetadataUri('');
+      });
     } catch (e) {
       console.log(e);
     }
   };
 
-  const royaltyInfo = async () => {
-    console.log(contract)
-    const info = await contract.royaltyInfo({ tokenId: 1, sellPrice: 10000 });
-    alert(info);
-  };
-
-  const setContractURI = async () => {
+  const setRoyalties = async () => {
     try {
-      contract.setContractURI({
-        contractURI: "",
+      const royaltiesPromise = contract.setRoyalties({
+        publicAddress: user.address,
+        fee: parseInt(bps)
+      })
+      .then((tx) => {
+        setRespMsg(`Tx: ${tx}`)
+        // dispatch({
+        //   type: "CONNECTED_CONTRACT",
+        //   payload: {
+        //     contract
+        //   }
+        // });
+      }, reason => {
+        setRespMsg(`Reason: ${reason}`)
+      });
+
+      toast.promise(
+        royaltiesPromise,
+        {
+          position: "top-right",
+          pending: "🦄 - Setting Roylaties",
+          success: `Set 👌: ${respMsg}`,
+          error: `Error 🤯: ${respMsg}`
+        }
+      ).finally(() => {
+        setIsOpen(false);
+        setBps('');
       });
     } catch (e) {
       console.log(e);
     }
-  };
+  }
 
   return (
     <>
-      <h3>Mint a new NFT <small>({contract.contractAddress}</small>)</h3>
-      <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
-      <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
-      <StyleButton onClick={() => mint()}>Mint</StyleButton>
+      <div>
+        <h3 style={{fontWeight: '900'}}>Interact with your NFT contract <small>({contract.contractAddress}</small>)</h3>
+        <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
+        <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
+        <StyleButton onClick={() => mint()}>Mint</StyleButton>
+        <p>To set the royalties to your address, simply add the basis points you want and press Set Royalties.</p>
+        <StyledInput placeholder="0-10000 bps" value={bps} onChange={e => setBps(e.target.value)} />
+        <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>
+      </div>
+      <ModalDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+        {content()}
+      </ModalDialog>
     </>
   );
 };

@@ -35,7 +35,7 @@ const LoadContract = () => {
     <>
       <fieldset>
         <legend>
-          <h2>Load an existing Contract</h2>
+          <h2 style={{fontWeight: '900'}}>Load an existing Contract</h2>
           <p>Select one of the templates below to load an existing contract</p>
         </legend>
       </fieldset>
