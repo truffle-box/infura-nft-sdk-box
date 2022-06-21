@@ -28,22 +28,19 @@ const GalleryView = () => {
 
 
   const start = useCallback(async (address) => {
-    const data = await sdk.getNFTs({
-      publicAddress: address,
-      includeMetadata: true
-    });
+    let items = [];
+    if (contract && contract.contractAddress) { 
+      const data = await sdk.getNFTsForCollection({
+        contractAddress: contract.contractAddress,
+      });
 
-    const items = data.assets.reduce((listNfts, nft) => {
-      if (contract && contract.contractAddress) {
-        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) { 
+      items = data.assets.reduce((listNfts, nft) => {
           listNfts.push(nft.metadata) 
           return listNfts
-        }
-        return [...listNfts];
-      }
-      listNfts.push(nft.metadata)
-      return listNfts;
-    },[]);
+      },[]);
+
+    }
+
 
     setItems(items);
   }, [sdk]);
