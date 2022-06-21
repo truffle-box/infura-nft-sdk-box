@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { LabeledInput as Input } from "../atoms/Input";
 import { EthProvider } from "../../ethereum";
 import { TEMPLATES } from "@infura/sdk";
+import { toast } from "react-toastify";
 
 const ERC721MintableForm = ({ setIsOpen }) => {
   const { dispatch, sdk } = useContext(EthProvider);
@@ -9,6 +10,9 @@ const ERC721MintableForm = ({ setIsOpen }) => {
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [selectedContractUri, setSelectedContractUri] = useState("");
   const formRef = useRef();
+
+  // for the output of the TX
+  const [respMsg, setRespMsg] = useState("");
 
   const inputs = [
     {
@@ -37,23 +41,78 @@ const ERC721MintableForm = ({ setIsOpen }) => {
   const wenSubmit = async (e) => {
     e.preventDefault();
     try {
-      const contract = await sdk.deploy({
-        template: TEMPLATES.ERC721Mintable,
-        params: {
-          name: selectedName,
-          symbol: selectedSymbol,
-          contractURI: selectedContractUri
+      // FIXME: remove me eventually.
+      // const contract = await sdk.deploy({
+      //   template: TEMPLATES.ERC721Mintable,
+      //   params: {
+      //     name: selectedName,
+      //     symbol: selectedSymbol,
+      //     contractURI: selectedContractUri
+      //   }
+      // });
+      // dispatch({
+      //   type: "CONNECTED_CONTRACT",
+      //   payload: {
+      //     contract
+      //   }
+      // });
+      let contractDeploymentPromise = () => new Promise((resolve, reject) => {
+        let number = Math.random();
+        // toast.info(`Number: ${number}`)
+        if(number <= 0.5){
+          setRespMsg("Failed. soz.")
+          reject("Failed...")
+        } else {
+          setRespMsg("Gonna pass a good one...")
+          return setTimeout(resolve, 3000);
         }
       });
-      dispatch({
-        type: "CONNECTED_CONTRACT",
-        payload: {
-          contract
+
+      if(sdk){
+        contractDeploymentPromise = sdk.deploy({
+          template: TEMPLATES.ERC721Mintable,
+          params: {
+            name: selectedName,
+            symbol: selectedSymbol,
+            contractURI: selectedContractUri
+          }
+        })
+        .then((contract) => {
+          // got value
+          setRespMsg(`Address: ${contract}`)
+          // DISPATCH CONTRACT to your REDUX at this stage to save it???
+          dispatch({
+          type: "CONNECTED_CONTRACT",
+          payload: {
+            contract
+          }
+        });
+        }, reason => {
+          // error somewhere down in your promise...
+          setRespMsg(`Reason: ${reason}`)
+          // TODO: anything to add to redux here?
+
+        });
+      }
+
+      // TODO: Fix this to wire in the promise up above...
+      // const functionThatReturnPromise = () => new Promise(resolve => {
+      //   return setTimeout(resolve, 3000);
+      // });
+
+      toast.promise(
+        contractDeploymentPromise,
+        {
+          position: "top-right",
+          pending: "🦄 - Contract Deploying - FAKE RIGHT NOW",
+          success: `Deployed 👌: ${respMsg}`,
+          error: `Error 🤯: ${respMsg}`
         }
+      ).finally(() => {
+        //  TODO: if your contract is successful or whatever you want to close the modal here:
+        setIsOpen(false);
       });
-      //  TODO: if your contract is successful or whatever you want to close the modal here:
-      // TODO: consider a toast popup to say TX pending or something...
-      setIsOpen(false);
+
     } catch (e) {
       console.log(e);
     }
