@@ -62,15 +62,6 @@ const ERC721UserMintableForm = ({setIsOpen}) => {
 
     e.preventDefault();
     console.log("submitting via sdk");
-    // try {
-    //   await sdk.deploy(
-    //     selectedName,
-    //     selectedSymbol,
-    //     selectedContractUri,
-    //   );
-    // } catch (e) {
-    //   console.log(e);
-    // }
   };
   const setValue = (name, value) => {
     switch (name) {

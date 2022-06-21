@@ -131,7 +131,8 @@ const ERC721Mintable = () => {
         <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
         <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
         <StyleButton onClick={() => mint()}>Mint</StyleButton>
-        <p>To set the royalties to your address, simply add the basis points you want and press Set Royalties.</p>
+        <p>To set a royalty, use basis points to determine the percentage. You can calculate bps by multiplying your percentage by 100.
+        <br/>For example, if you want to do 1% of each sale, it would be 100bps. If you want 100% of the sales to go to the artist, it would be 10000 bps.</p>
         <StyledInput placeholder="0-10000 bps" value={bps} onChange={e => setBps(e.target.value)} />
         <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>
       </div>

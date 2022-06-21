@@ -4,7 +4,7 @@ import { PuffLoader } from "react-spinners";
 
 import "./index.css";
 
-const Item = ({ num, asset }) => (
+const Item = ({ asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
       <div className="thumbnail">
@@ -25,7 +25,6 @@ const GalleryView = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const { sdk, user, contract } = useContext(EthProvider);
-
 
   const start = useCallback(async (address) => {
     const data = await sdk.getNFTs({
