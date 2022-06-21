@@ -1,9 +1,12 @@
-import React, { useCallback, useEffect, useState, useContext } from "react";
+import React, { Suspense, useCallback, useEffect, useState, useContext } from "react";
 import { EthProvider } from "../../../ethereum";
+import { MasonryInfiniteGrid } from "@egjs/react-infinitegrid";
+import { PuffLoader } from "react-spinners";
 
 import "./index.css";
 
-const Item = ({ asset }) => (
+const Item = ({ num, asset }) => (
+  <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
       <div className="thumbnail">
         <img src={asset?.image} alt="" />
@@ -15,6 +18,7 @@ const Item = ({ asset }) => (
         </audio>
       </div>
     </div>
+  </Suspense>
 );
 
 // const RenderNFTImage = ({ url, mimeType }) => {
@@ -125,33 +129,33 @@ const Item = ({ asset }) => (
 const GalleryView = () => {
   const [items, setItems] = useState([]);
 
-  const { sdk, user } = useContext(EthProvider);
+  const { sdk, contract } = useContext(EthProvider);
   
-  const start = useCallback(async () => {
+  const start = async () => {
+    const data = await sdk.getNFTs({
+      publicAddress: contract.contractAddress,
+      includeMetadata: true
+    });
 
-    if (sdk) {
-      const data = await sdk.getNFTs({
-        publicAddress: user.address,
-        includeMetadata: true
-      });
-  
-      const items = []
-      for (let i = 0; i < data.assets.length; ++i) {
-        items.push(data.assets[i].metadata);
-      }
-      setItems(items);
+    const items = []
+    for (let i = 0; i < data.assets.length; ++i) {
+      console.log(data.assets[i].metadata);
+      items.push(data.assets[i].metadata);
     }
-  }, [sdk]);
+    setItems(items);
+  }
 
   useEffect(() => {
     start()
-  }, [sdk]);
+  }, []);
 
   return (<>
       { items.length > 0 ?
-          items.map((item, i) => (
+          items.map((item) => (
             <Item
-              key={i}
+              data-grid-groupkey={item.groupKey}
+              key={item.key}
+              num={item.key}
               asset={item}
             />)
           ) :
