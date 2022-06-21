@@ -24,18 +24,24 @@ const GalleryView = () => {
   const [items, setItems] = useState([]);
 
   const { sdk, user } = useContext(EthProvider);
+  const { contract } = useContext(EthProvider);
+
 
   const start = useCallback(async (address) => {
-    const data = await sdk.getNFTs({
-      publicAddress: address,
-      includeMetadata: true
-    });
+    let items = [];
+    if (contract && contract.contractAddress) { 
+      const data = await sdk.getNFTsForCollection({
+        contractAddress: contract.contractAddress,
+      });
 
-    const items = [];
-    for (let i = 0; i < data.assets.length; ++i) {
-      console.log(data.assets[i].metadata);
-      items.push(data.assets[i].metadata);
+      items = data.assets.reduce((listNfts, nft) => {
+          listNfts.push(nft.metadata) 
+          return listNfts
+      },[]);
+
     }
+
+
     setItems(items);
   }, [sdk]);
 
@@ -57,7 +63,7 @@ const GalleryView = () => {
           asset={item}
         />)
       ) :
-      (<div>Loading...</div>)
+      (<div>No NFTs</div>)
     }
   </>);
 };
