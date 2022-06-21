@@ -10,7 +10,7 @@ const AddContract = () => {
     <>
       <fieldset>
         <legend>
-          <h2>Deploy a new Contract</h2>
+          <h2 style={{fontWeight: '900'}}>Deploy a new Contract</h2>
           <p>Select one of the templates below to create a new contract</p>
         </legend>
       </fieldset>

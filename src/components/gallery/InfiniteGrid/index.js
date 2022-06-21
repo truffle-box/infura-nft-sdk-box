@@ -22,27 +22,28 @@ const Item = ({ num, asset }) => (
 
 const GalleryView = () => {
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { sdk, user } = useContext(EthProvider);
-  const { contract } = useContext(EthProvider);
+  const { sdk, user, contract } = useContext(EthProvider);
 
 
   const start = useCallback(async (address) => {
-    let items = [];
-    if (contract && contract.contractAddress) { 
-      const data = await sdk.getNFTsForCollection({
-        contractAddress: contract.contractAddress,
-      });
+    const data = await sdk.getNFTs({
+      publicAddress: user.address,
+      includeMetadata: true,
+    });
+    console.log(data.assets);
 
-      items = data.assets.reduce((listNfts, nft) => {
-          listNfts.push(nft.metadata) 
-          return listNfts
-      },[]);
-
+    const items = [];
+    for (let i = 0; i < data.assets.length; ++i) {
+      if (contract && contract.contractAddress && data.assets[i].contract.toLowerCase() !== contract.contractAddress.toLowerCase()) {
+        continue;
+      } else {
+        items.push(data.assets[i].metadata);
+      }
     }
-
-
     setItems(items);
+    setIsLoading(false);
   }, [sdk]);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const GalleryView = () => {
   }, [start, user]);
 
   return (<>
-    {items.length > 0 ?
+    {isLoading ? <div>Loading...</div> : items.length > 0 ?
       items.map((item, i) => (
         <Item
           data-grid-groupkey={i}

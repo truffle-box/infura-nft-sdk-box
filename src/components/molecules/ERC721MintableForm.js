@@ -11,7 +11,6 @@ const ERC721MintableForm = ({ setIsOpen }) => {
   const [selectedContractUri, setSelectedContractUri] = useState("");
   const formRef = useRef();
 
-  // for the output of the TX
   const [respMsg, setRespMsg] = useState("");
 
   const inputs = [
@@ -41,35 +40,8 @@ const ERC721MintableForm = ({ setIsOpen }) => {
   const wenSubmit = async (e) => {
     e.preventDefault();
     try {
-      // FIXME: remove me eventually.
-      // const contract = await sdk.deploy({
-      //   template: TEMPLATES.ERC721Mintable,
-      //   params: {
-      //     name: selectedName,
-      //     symbol: selectedSymbol,
-      //     contractURI: selectedContractUri
-      //   }
-      // });
-      // dispatch({
-      //   type: "CONNECTED_CONTRACT",
-      //   payload: {
-      //     contract
-      //   }
-      // });
-      let contractDeploymentPromise = () => new Promise((resolve, reject) => {
-        let number = Math.random();
-        // toast.info(`Number: ${number}`)
-        if(number <= 0.5){
-          setRespMsg("Failed. soz.")
-          reject("Failed...")
-        } else {
-          setRespMsg("Gonna pass a good one...")
-          return setTimeout(resolve, 3000);
-        }
-      });
-
-      if(sdk){
-        contractDeploymentPromise = sdk.deploy({
+      if(sdk) {
+        const contractDeploymentPromise = sdk.deploy({
           template: TEMPLATES.ERC721Mintable,
           params: {
             name: selectedName,
@@ -78,45 +50,34 @@ const ERC721MintableForm = ({ setIsOpen }) => {
           }
         })
         .then((contract) => {
-          // got value
           setRespMsg(`Address: ${contract}`)
-          // DISPATCH CONTRACT to your REDUX at this stage to save it???
           dispatch({
-          type: "CONNECTED_CONTRACT",
-          payload: {
-            contract
-          }
-        });
+            type: "CONNECTED_CONTRACT",
+            payload: {
+              contract
+            }
+          });
         }, reason => {
-          // error somewhere down in your promise...
           setRespMsg(`Reason: ${reason}`)
-          // TODO: anything to add to redux here?
+        });
 
+        toast.promise(
+          contractDeploymentPromise,
+          {
+            position: "top-right",
+            pending: "🦄 - Contract Deploying",
+            success: `Deployed 👌: ${respMsg}`,
+            error: `Error 🤯: ${respMsg}`
+          }
+        ).finally(() => {
+          setIsOpen(false);
         });
       }
-
-      // TODO: Fix this to wire in the promise up above...
-      // const functionThatReturnPromise = () => new Promise(resolve => {
-      //   return setTimeout(resolve, 3000);
-      // });
-
-      toast.promise(
-        contractDeploymentPromise,
-        {
-          position: "top-right",
-          pending: "🦄 - Contract Deploying - FAKE RIGHT NOW",
-          success: `Deployed 👌: ${respMsg}`,
-          error: `Error 🤯: ${respMsg}`
-        }
-      ).finally(() => {
-        //  TODO: if your contract is successful or whatever you want to close the modal here:
-        setIsOpen(false);
-      });
-
     } catch (e) {
       console.log(e);
     }
   };
+
   const setValue = (name, value) => {
     switch (name) {
       case "name":

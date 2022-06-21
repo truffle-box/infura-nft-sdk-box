@@ -6,32 +6,6 @@ import { classNames } from "../utils";
 import { Dialog } from "@headlessui/react";
 import ModalDialog from "../organisms/ModalDialog";
 
-// const Wrap = styled.div`
-//   grid-area: category;
-//   p {
-//     span {
-//       color: ${transparentize(0.3, "#24292E")};
-//     }
-//   }
-//   div {
-//     display: flex;
-//     flex-direction: row;
-//     gap: 1em;
-//   }
-// `;
-
-// const Button = styled.div`
-//   ${"" /* But can also make this fit-content */}
-//   width: 100px;
-//   padding: 0.5em;
-//   cursor: pointer;
-//   border-radius: 25px;
-//   box-shadow: rgba(0, 0, 0, 0.05) 0px 3px 12px 0px,
-//     rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-//   background-color: ${({ isSelected }) => (isSelected ? "#935DD7" : "#fff")};
-//   color: ${({ isSelected }) => (isSelected ? "#fff" : "#24292E")};
-// `;
-
 const CategorySelectorModal = ({
   categories,
   selectedCategory,
