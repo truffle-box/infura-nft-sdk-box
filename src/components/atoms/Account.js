@@ -5,6 +5,7 @@ import { EthProvider } from "../../ethereum";
 import { formatAddress } from "../../utils";
 
 const Wrap = styled.div`
+  height: 48px;
 	background-color: #282828;
   display: flex;
   cursor: default;
