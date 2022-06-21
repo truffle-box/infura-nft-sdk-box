@@ -1,8 +1,8 @@
 {
     "name": "Infura Melodies",
     "description": "Experience (and own) the wide vocal range of the Infura band.",
-    "image": "tbd/image.png",
-    "external_link": "tbd",
+    "image": "thumbnail image",
+    "external_link": "link to collection info",
     "seller_fee_basis_points": 10,
     "fee_recipient": "0x60793cAbCAD5C05AF694c03502ee44609E521244"
 }
