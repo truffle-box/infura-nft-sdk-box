@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { LabeledInput as Input } from "../atoms/Input";
 import { EthProvider } from "../../ethereum";
 
-const ERC721UserMintableForm = () => {
+const ERC721UserMintableForm = ({setIsOpen}) => {
   const { signer } = useContext(EthProvider);
   const [selectedName, setSelectedName] = useState("");
   const [selectedSymbol, setSelectedSymbol] = useState("");
@@ -111,8 +111,10 @@ const ERC721UserMintableForm = () => {
               onChange={(event) => setValue(input.name, event.target.value)}
             />
           ))}
-          <input type="submit" value="Deploy" />
         </fieldset>
+        <div className="flex flex-row justify-end gap-4 align-bottom w-full">
+          <button onClick={() => setIsOpen(false)}>Cancel</button> <input type="submit" value="Deploy" />
+        </div>
       </form>
     </>
   );

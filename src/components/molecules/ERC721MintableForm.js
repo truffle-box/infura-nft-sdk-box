@@ -3,7 +3,7 @@ import { LabeledInput as Input } from "../atoms/Input";
 import { EthProvider } from "../../ethereum";
 import { TEMPLATES } from "@infura/sdk";
 
-const ERC721MintableForm = () => {
+const ERC721MintableForm = ({ setIsOpen }) => {
   const { dispatch, sdk } = useContext(EthProvider);
   const [selectedName, setSelectedName] = useState("");
   const [selectedSymbol, setSelectedSymbol] = useState("");
@@ -16,22 +16,22 @@ const ERC721MintableForm = () => {
       description: "(name of your token)",
       placeholder: "",
       type: "text",
-      name: "name",
+      name: "name"
     },
     {
       label: "Token Symbol",
       description: "(symbol of your token)",
       placeholder: "CSNSYS",
       type: "text",
-      name: "symbol",
+      name: "symbol"
     },
     {
       label: "Contract URI",
       description: "(link)",
       placeholder: "e.g. ipfs://ajfa0sdjasfd0asfj",
       type: "text",
-      name: "contract_uri",
-    },
+      name: "contract_uri"
+    }
   ];
 
   const wenSubmit = async (e) => {
@@ -42,15 +42,18 @@ const ERC721MintableForm = () => {
         params: {
           name: selectedName,
           symbol: selectedSymbol,
-          contractURI: selectedContractUri,
-        },
+          contractURI: selectedContractUri
+        }
       });
       dispatch({
         type: "CONNECTED_CONTRACT",
         payload: {
-          contract,
-        },
+          contract
+        }
       });
+      //  TODO: if your contract is successful or whatever you want to close the modal here:
+      // TODO: consider a toast popup to say TX pending or something...
+      setIsOpen(false);
     } catch (e) {
       console.log(e);
     }
@@ -85,8 +88,11 @@ const ERC721MintableForm = () => {
               onChange={(event) => setValue(input.name, event.target.value)}
             />
           ))}
-          <input type="submit" value="Deploy" />
         </fieldset>
+        <div className="flex flex-row justify-end gap-4 align-bottom w-full">
+          <button onClick={() => setIsOpen(false)}>Cancel</button>
+          <input type="submit" value="Deploy" />
+        </div>
       </form>
     </>
   );

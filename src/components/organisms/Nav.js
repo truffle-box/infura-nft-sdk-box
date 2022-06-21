@@ -13,7 +13,7 @@ const Nav = () => {
   return (
     <nav>
       <MenuLink link="/" name="Home" icon={categories} />
-      <div style={{ position: "relative", left: "10px" }}>
+      <div className="relative left-2">
         {contract && (
           <MenuLink link="/contract" name="Contract" icon={icon_stars} />
         )}

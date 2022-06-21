@@ -3,11 +3,12 @@ import React, { useState } from "react";
 import CategorySelector from "../components/molecules/CategorySelector";
 import ERC721MintableForm from "../components/molecules/ERC721MintableForm";
 import ERC721UserMintableForm from "../components/molecules/ERC721UserMintableForm";
+import CategorySelectorModal from "../components/molecules/CategorySelectorModal";
 
 const AddContract = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
-  const templates = ["Unlimited"];
+  const templates = ["Unlimited", "UserMintable"];
 
   return (
     <>
@@ -18,13 +19,11 @@ const AddContract = () => {
         </legend>
       </fieldset>
       <fieldset>
-        <CategorySelector
+        <CategorySelectorModal
           categories={templates}
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
-        {selectedCategory === "Unlimited" && <ERC721MintableForm />}
-        {selectedCategory === "UserMintable" && <ERC721UserMintableForm />}
       </fieldset>
     </>
   );
