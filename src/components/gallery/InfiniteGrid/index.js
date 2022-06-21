@@ -66,7 +66,7 @@ const GalleryView = () => {
           asset={item}
         />)
       ) :
-      (<div>Loading...</div>)
+      (<div>No NFTs</div>)
     }
   </>);
 };
