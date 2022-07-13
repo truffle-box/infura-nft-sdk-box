@@ -25,7 +25,6 @@
     "url": "https://github.com/truffle-box/nft-api-boxissues"
   },
   "dependencies": {
-    "@egjs/react-infinitegrid": "^4.4.1-beta.0",
     "@headlessui/react": "^1.6.5",
     "@infura/sdk": "^1.0.2",
     "@openzeppelin/contracts": "^4.6.0",
