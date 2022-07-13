@@ -1,5 +1,5 @@
 import React, { Suspense, useCallback, useContext, useEffect, useState } from "react";
-import { EthProvider } from "../../../ethereum";
+import { EthProvider } from "../../ethereum";
 import { PuffLoader } from "react-spinners";
 
 import "./index.css";
@@ -34,8 +34,8 @@ const GalleryView = () => {
 
     const items = data.assets.reduce((listNfts, nft) => {
       if (contract && contract.contractAddress) {
-        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) { 
-          listNfts.push(nft.metadata) 
+        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) {
+          listNfts.push(nft.metadata)
           return listNfts
         }
         return [...listNfts];

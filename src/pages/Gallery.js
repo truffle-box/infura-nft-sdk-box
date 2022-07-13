@@ -1,5 +1,5 @@
 import React from "react";
-import GalleryView from "../components/gallery/InfiniteGrid";
+import GalleryView from "../components/gallery";
 
 const Gallery = () => {
   return (
