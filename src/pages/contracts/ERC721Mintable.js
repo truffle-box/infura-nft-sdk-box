@@ -5,18 +5,6 @@ import { Dialog } from "@headlessui/react";
 import ModalDialog from "../../components/organisms/ModalDialog";
 import { toast } from "react-toastify";
 
-const Wrap = styled.button`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.5em;
-  width: 300px;
-  height: 50px;
-  img {
-    height: 10px;
-  }
-`;
-
 const StyledInput = styled.input`
   width: 300px;
   height: 50px;
@@ -39,7 +27,6 @@ const StyleButton = styled.button`
 `;
 
 const ERC721Mintable = () => {
-  const [modalTitle, setModalTitle] = useState('');
   const [dialogText, setDialogText] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [metadataUri, setMetadataUri] = useState('');
@@ -63,7 +50,7 @@ const ERC721Mintable = () => {
         </Dialog.Panel>
       </>
     );
-  }, []);
+  },[dialogText]);
 
   const mint = async () => {
     try {
@@ -136,7 +123,7 @@ const ERC721Mintable = () => {
         <StyledInput placeholder="0-10000 bps" value={bps} onChange={e => setBps(e.target.value)} />
         <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>
       </div>
-      <ModalDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+      <ModalDialog isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         {content()}
       </ModalDialog>
     </>

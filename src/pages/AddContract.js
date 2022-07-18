@@ -1,5 +1,21 @@
 import React, { useState } from "react";
 import CategorySelectorModal from "../components/molecules/CategorySelectorModal";
+import { useStore } from "../state";
+
+
+const ButtonChild = () => {
+  const {contract, setContract} = useStore();
+  return (
+    <div>
+      {contract}
+      <button
+        onClick={() => setContract("0x" + Math.random())}
+      >
+        genContract
+      </button>
+    </div>
+  );
+};
 
 const AddContract = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -20,6 +36,9 @@ const AddContract = () => {
           selectedCategory={selectedCategory}
           setSelectedCategory={setSelectedCategory}
         />
+      </fieldset>
+      <fieldset>
+        <ButtonChild/>
       </fieldset>
     </>
   );

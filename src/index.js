@@ -2,13 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { Provider } from "./ethereum";
 import "./index.css";
+import { Web3ReactProvider } from "@web3-react/core";
+import { hooks as metaMaskHooks, metaMask } from "./components/web3/connectors/metaMask";
+
+const connectors = [
+  [metaMask, metaMaskHooks]
+];
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <Provider>
+  <Web3ReactProvider connectors={connectors}>
+    {/*<EthProvider>*/}
     <App />
-  </Provider>
+    {/*</EthProvider>*/}
+  </Web3ReactProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

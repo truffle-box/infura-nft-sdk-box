@@ -1,30 +1,12 @@
-import React, { useContext } from "react";
-
 import infurabrand from "../../assets/infura_brand.svg";
-import Button from "../atoms/Button";
-import { EthProvider } from "../../ethereum";
-import Account from "../atoms/Account";
+import NetworkConnector from "../web3/NetworkConnector";
 
 const Header = () => {
-  const { provider, user } = useContext(EthProvider);
-  const { address } = user;
-
-  const checkConnection = () => {
-    switch (true) {
-      case provider && address !== "":
-        return <Account />;
-      case provider !== null:
-        return <Button icon="fox">Connect with Wallet</Button>;
-      case !provider:
-      default:
-        return null;
-    }
-  };
 
   return (
     <header>
-      <img src={infurabrand} alt="Infura" style={{"width": "3rem", "marginLeft": "1rem"}} />
-      {checkConnection()}
+      <img src={infurabrand} alt="Infura" className={'w-12 ml-4'}/>
+      <NetworkConnector>Connect with Wallet</NetworkConnector>
     </header>
   );
 };

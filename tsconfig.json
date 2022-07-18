@@ -7,12 +7,23 @@
     "scripts/mint.d.ts"
   ],
   "compilerOptions": {
-    "target": "es2016",
+    "target": "ESNext",
+    "jsx": "react-jsx",
     // "lib": [],
+    "baseUrl": "./",
+    "sourceRoot": "./src",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "module": "commonjs",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true
   }
 }

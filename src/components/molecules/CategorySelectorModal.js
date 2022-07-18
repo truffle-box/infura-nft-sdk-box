@@ -60,7 +60,7 @@ const CategorySelectorModal = ({
           ))}
         </div>
       </div>
-      <ModalDialog isOpen={isOpen} setIsOpen={setIsOpen}>
+      <ModalDialog isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         {content()}
       </ModalDialog>
     </>

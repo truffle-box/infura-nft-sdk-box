@@ -1,20 +1,39 @@
-import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment } from "react";
+
+
+interface ModalProps {
+  isOpen: boolean;
+  onDismiss: () => void;
+  afterLeave?: () => void;
+  children?: React.ReactNode;
+  // transparent?: boolean;
+  unmount?: boolean;
+}
 
 /**
  * DOCS: https://headlessui.dev/react/dialog#basic-example
  *
  * @param children - the elements inside the dialog. This will handle all the logic for opening/closing mostly.
  * @param isOpen - flag to show/hide
- * @param setIsOpen - function you call back in the parent.
+ * @param onDismiss - function you call back in the parent.
+ * @param unmount - if we want to unmount this element after closing
+ * @param afterLeave - func to call when we leave this dialog.
  * @returns {JSX.Element} - the modal element ready to rock.
  */
-function ModalDialog({ children, isOpen, setIsOpen }) {
+function ModalDialog({
+                       children,
+                       isOpen,
+                       onDismiss,
+                       unmount,
+                       afterLeave
+                     }: ModalProps) {
 
   return (<>
-      <Transition show={isOpen} as={Fragment}>
+      <Transition show={isOpen} as={Fragment} afterLeave={afterLeave}>
         <Dialog
-          onClose={() => setIsOpen(false)}
+          onClose={onDismiss}
+          unmount={unmount}
           className="relative z-50"
         >
           <Transition.Child
