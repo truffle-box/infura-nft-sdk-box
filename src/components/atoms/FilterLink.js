@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { Link, useSearchParams } from "react-router-dom";
+import React from 'react'
+import styled from 'styled-components'
+import { Link, useSearchParams } from 'react-router-dom'
 
 const Wrap = styled(Link)`
   text-decoration: none;
@@ -10,17 +10,17 @@ const Wrap = styled(Link)`
   &.active {
     font-weight: 600;
   }
-`;
+`
 
 const Icon = styled.img`
   position: relative;
   right: 3px;
   top: 2px;
-`;
+`
 
 const FilterLink = ({ link, name, icon, category, children, ...props }) => {
-  let [searchParams] = useSearchParams();
-  let isActive = searchParams.get("category") === category;
+  let [searchParams] = useSearchParams()
+  let isActive = searchParams.get('category') === category
 
   return (
     <Wrap
@@ -28,7 +28,7 @@ const FilterLink = ({ link, name, icon, category, children, ...props }) => {
       {...props}
       style={{
         ...props.style,
-        fontWeight: isActive ? "600" : "400",
+        fontWeight: isActive ? '600' : '400'
       }}
     >
       <p>
@@ -36,7 +36,7 @@ const FilterLink = ({ link, name, icon, category, children, ...props }) => {
         {name}
       </p>
     </Wrap>
-  );
-};
+  )
+}
 
-export default FilterLink;
+export default FilterLink

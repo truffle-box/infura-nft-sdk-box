@@ -1,41 +1,41 @@
-import React, { useContext, useRef, useState } from "react";
-import CategorySelector from "../components/molecules/CategorySelector";
-import { LabeledInput as Input } from "../components/atoms/Input";
-import { EthProvider } from "../ethereum";
-import { TEMPLATES } from "@infura/sdk";
+import React, { useCallback, useRef, useState } from 'react'
+import CategorySelector from '../components/molecules/CategorySelector'
+import { LabeledInput as Input } from '../components/atoms/Input'
+import { TEMPLATES } from '@infura/sdk'
+import { useInfuraSdk } from '../hooks/useInfuraSdk'
+import { useStore } from '../state'
 
 const LoadContract = () => {
-  const { sdk, dispatch } = useContext(EthProvider);
 
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedContract, setSelectedContract] = useState("");
-  const formRef = useRef();
+  const sdk = useInfuraSdk()
+  const { setContractInstance } = useStore()
 
-  const templates = ["Unlimited"];
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedContract, setSelectedContract] = useState('')
+  const formRef = useRef()
 
-  const wenSubmit = async (e) => {
+  const templates = ['Unlimited']
+
+  const wenSubmit = useCallback(() => async (e) => {
+    if (!sdk) return undefined
+
     if (!selectedCategory) {
-      alert("Please select a template");
-      return;
+      alert('Please select a template')
+      return
     }
-    e.preventDefault();
+    e.preventDefault()
     const contract = await sdk.loadContract({
       template: TEMPLATES.ERC721Mintable,
-      contractAddress: selectedContract,
-    });
-    dispatch({
-      type: "CONNECTED_CONTRACT",
-      payload: {
-        contract,
-      },
-    });
-  };
+      contractAddress: selectedContract
+    })
+    setContractInstance(contract)
+  }, [sdk])
 
   return (
     <>
       <fieldset>
         <legend>
-          <h2 style={{fontWeight: '900'}}>Load an existing Contract</h2>
+          <h2 style={{ fontWeight: '900' }}>Load an existing Contract</h2>
           <p>Select one of the templates below to load an existing contract</p>
         </legend>
       </fieldset>
@@ -57,7 +57,7 @@ const LoadContract = () => {
         </form>
       </fieldset>
     </>
-  );
-};
+  )
+}
 
-export default LoadContract;
+export default LoadContract

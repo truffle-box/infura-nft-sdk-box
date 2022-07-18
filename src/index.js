@@ -5,6 +5,7 @@ import reportWebVitals from "./reportWebVitals";
 import "./index.css";
 import { Web3ReactProvider } from "@web3-react/core";
 import { hooks as metaMaskHooks, metaMask } from "./components/web3/connectors/metaMask";
+import { EthProvider } from './ethereum'
 
 const connectors = [
   [metaMask, metaMaskHooks]
@@ -13,9 +14,9 @@ const connectors = [
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Web3ReactProvider connectors={connectors}>
-    {/*<EthProvider>*/}
-    <App />
-    {/*</EthProvider>*/}
+    <EthProvider>
+      <App />
+    </EthProvider>
   </Web3ReactProvider>
 );
 

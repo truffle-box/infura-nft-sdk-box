@@ -1,46 +1,49 @@
-import React, { useContext, useRef, useState } from "react";
-import { LabeledInput as Input } from "../atoms/Input";
-import { EthProvider } from "../../ethereum";
-import { TEMPLATES } from "@infura/sdk";
-import { toast } from "react-toastify";
+import React, { useRef, useState } from 'react'
+import { LabeledInput as Input } from '../atoms/Input'
+import { TEMPLATES } from '@infura/sdk'
+import { toast } from 'react-toastify'
+import { useInfuraSdk } from '../../hooks/useInfuraSdk'
+import { useStore } from '../../state'
 
 const ERC721MintableForm = ({ setIsOpen }) => {
-  const { dispatch, sdk } = useContext(EthProvider);
-  const [selectedName, setSelectedName] = useState("");
-  const [selectedSymbol, setSelectedSymbol] = useState("");
-  const [selectedContractUri, setSelectedContractUri] = useState("");
-  const formRef = useRef();
+  const sdk = useInfuraSdk()
+  const { setContract } = useStore()
 
-  const [respMsg, setRespMsg] = useState("");
+  const [selectedName, setSelectedName] = useState('')
+  const [selectedSymbol, setSelectedSymbol] = useState('')
+  const [selectedContractUri, setSelectedContractUri] = useState('')
+  const formRef = useRef()
+
+  const [respMsg, setRespMsg] = useState('')
 
   const inputs = [
     {
-      label: "Token Name",
-      description: "(name of your token)",
-      placeholder: "",
-      type: "text",
-      name: "name"
+      label: 'Token Name',
+      description: '(name of your token)',
+      placeholder: '',
+      type: 'text',
+      name: 'name'
     },
     {
-      label: "Token Symbol",
-      description: "(symbol of your token)",
-      placeholder: "CSNSYS",
-      type: "text",
-      name: "symbol"
+      label: 'Token Symbol',
+      description: '(symbol of your token)',
+      placeholder: 'CSNSYS',
+      type: 'text',
+      name: 'symbol'
     },
     {
-      label: "Contract URI",
-      description: "(link)",
-      placeholder: "e.g. ipfs://ajfa0sdjasfd0asfj",
-      type: "text",
-      name: "contract_uri"
+      label: 'Contract URI',
+      description: '(link)',
+      placeholder: 'e.g. ipfs://ajfa0sdjasfd0asfj',
+      type: 'text',
+      name: 'contract_uri'
     }
-  ];
+  ]
 
   const wenSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      if(sdk) {
+      if (sdk) {
         const contractDeploymentPromise = sdk.deploy({
           template: TEMPLATES.ERC721Mintable,
           params: {
@@ -49,50 +52,48 @@ const ERC721MintableForm = ({ setIsOpen }) => {
             contractURI: selectedContractUri
           }
         })
-        .then((contract) => {
-          setRespMsg(`Address: ${contract}`)
-          dispatch({
-            type: "CONNECTED_CONTRACT",
-            payload: {
-              contract
-            }
-          });
-        }, reason => {
-          setRespMsg(`Reason: ${reason}`)
-        });
+          .then((contract) => {
+            // TODO: this is a complex contract object, not an address. Can't be put in state.
+            setRespMsg(`Address: ${contract}`)
+            setContract(contract.address, contract.getTemplate())
+          }, reason => {
+            setRespMsg(`Reason: ${reason}`)
+          })
 
         toast.promise(
           contractDeploymentPromise,
           {
-            position: "top-right",
-            pending: "🦄 - Contract Deploying",
+            position: 'top-right',
+            pending: '🦄 - Contract Deploying',
             success: `Deployed 👌: ${respMsg}`,
             error: `Error 🤯: ${respMsg}`
           }
         ).finally(() => {
-          setIsOpen(false);
-        });
+          setIsOpen(false)
+        })
+      } else {
+        toast.error(' 🤯: No SDK Present/Configured')
       }
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   const setValue = (name, value) => {
     switch (name) {
-      case "name":
-        setSelectedName(value);
-        return;
-      case "symbol":
-        setSelectedSymbol(value);
-        return;
-      case "contract_uri":
-        setSelectedContractUri(value);
-        return;
+      case 'name':
+        setSelectedName(value)
+        return
+      case 'symbol':
+        setSelectedSymbol(value)
+        return
+      case 'contract_uri':
+        setSelectedContractUri(value)
+        return
       default:
-        return;
+        return
     }
-  };
+  }
 
   return (
     <>
@@ -115,7 +116,7 @@ const ERC721MintableForm = ({ setIsOpen }) => {
         </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default ERC721MintableForm;
+export default ERC721MintableForm

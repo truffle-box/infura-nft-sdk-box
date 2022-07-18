@@ -1,8 +1,9 @@
-import React, { Suspense, useCallback, useContext, useEffect, useState } from "react";
-import { EthProvider } from "../../ethereum";
-import { PuffLoader } from "react-spinners";
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
+import { PuffLoader } from 'react-spinners'
 
-import "./index.css";
+import './index.css'
+import { useStore } from '../../state'
+import { useInfuraSdk } from '../../hooks/useInfuraSdk'
 
 const Item = ({ asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
@@ -18,42 +19,43 @@ const Item = ({ asset }) => (
       </div>
     </div>
   </Suspense>
-);
+)
 
 const GalleryView = () => {
-  const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [items, setItems] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
-  const { sdk, user, contract } = useContext(EthProvider);
+  const { contract, user } = useStore()
+  const { sdk } = useInfuraSdk()
 
   const start = useCallback(async (address) => {
     const data = await sdk.getNFTs({
       publicAddress: address,
       includeMetadata: true
-    });
+    })
 
     const items = data.assets.reduce((listNfts, nft) => {
-      if (contract && contract.contractAddress) {
-        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) {
+      if (contract && contract.address) {
+        if (nft.contractAddress.toLowerCase() === contract.address.toLowerCase()) {
           listNfts.push(nft.metadata)
           return listNfts
         }
-        return [...listNfts];
+        return [...listNfts]
       }
-      return [...listNfts];
-    },[]);
+      return [...listNfts]
+    }, [])
 
-    setItems(items);
-    setIsLoading(false);
-  }, [sdk]);
+    setItems(items)
+    setIsLoading(false)
+  }, [sdk, contract])
 
   useEffect(() => {
     if (user && user.address) {
-      start(user.address);
+      start(user.address)
     } else {
-      setItems([]);
+      setItems([])
     }
-  }, [start, user]);
+  }, [start, user])
 
   return (<>
     {isLoading ? <div>Loading...</div> : items.length > 0 ?
@@ -67,7 +69,7 @@ const GalleryView = () => {
       ) :
       (<div>No NFTs</div>)
     }
-  </>);
-};
+  </>)
+}
 
-export default GalleryView;
+export default GalleryView

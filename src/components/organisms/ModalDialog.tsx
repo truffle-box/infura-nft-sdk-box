@@ -1,6 +1,5 @@
-import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
-
+import { Dialog, Transition } from '@headlessui/react'
+import React, { Fragment } from 'react'
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,13 +20,13 @@ interface ModalProps {
  * @param afterLeave - func to call when we leave this dialog.
  * @returns {JSX.Element} - the modal element ready to rock.
  */
-function ModalDialog({
-                       children,
-                       isOpen,
-                       onDismiss,
-                       unmount,
-                       afterLeave
-                     }: ModalProps) {
+function ModalDialog ({
+  children,
+  isOpen,
+  onDismiss,
+  unmount,
+  afterLeave
+}: ModalProps) {
 
   return (<>
       <Transition show={isOpen} as={Fragment} afterLeave={afterLeave}>
@@ -61,7 +60,6 @@ function ModalDialog({
             <div className="fixed inset-0 flex items-center justify-center p-4">
               {/* Container to center the panel */}
               <div className="flex min-h-full items-center justify-center w-full">
-                {/*CHILDREN HERE...*/}
                 {children}
               </div>
             </div>
@@ -69,7 +67,7 @@ function ModalDialog({
         </Dialog>
       </Transition>
     </>
-  );
+  )
 }
 
-export default ModalDialog;
+export default ModalDialog

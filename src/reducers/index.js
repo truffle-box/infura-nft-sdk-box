@@ -20,7 +20,7 @@ export const reducer = (state, action) => {
     }
 
     case "CONNECTED_CONTRACT": {
-      state.contract = action.payload.contract;
+      state.contract = action.payload.contractAddress;
       return;
     }
 

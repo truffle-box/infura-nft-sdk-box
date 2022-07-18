@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 export const UnlabeledInput = () => {
-  return <input type="text" placeholder="Search" />;
-};
+  return <input type="text" placeholder="Search" />
+}
 
 // Make this a conditional for the type, then just drill the props in :clown
 export const LabeledInput = ({
@@ -10,10 +10,10 @@ export const LabeledInput = ({
   type,
   label,
   description,
-  onChange,
+  onChange
 }) => {
   switch (type) {
-    case "number":
+    case 'number':
       return (
         <label>
           <p>
@@ -28,9 +28,9 @@ export const LabeledInput = ({
             step="0.01"
           />
         </label>
-      );
-    case "text":
-    case "url":
+      )
+    case 'text':
+    case 'url':
     default:
       return (
         <label>
@@ -44,9 +44,9 @@ export const LabeledInput = ({
             onChange={onChange}
           />
         </label>
-      );
+      )
   }
-};
+}
 
 // Textarea
 export const TextArea = ({ onChange }) => {
@@ -60,5 +60,5 @@ export const TextArea = ({ onChange }) => {
         onChange={onChange}
       />
     </label>
-  );
-};
+  )
+}

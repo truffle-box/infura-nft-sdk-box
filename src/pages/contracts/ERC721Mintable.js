@@ -1,9 +1,10 @@
-import React, { useCallback, useContext, useState } from "react";
-import { EthProvider } from "../../ethereum";
-import styled from "styled-components";
-import { Dialog } from "@headlessui/react";
-import ModalDialog from "../../components/organisms/ModalDialog";
-import { toast } from "react-toastify";
+import React, { useCallback, useState } from 'react'
+import styled from 'styled-components'
+import { Dialog } from '@headlessui/react'
+import ModalDialog from '../../components/organisms/ModalDialog'
+import { toast } from 'react-toastify'
+import { useStore } from '../../state'
+import { useWeb3React } from '@web3-react/core'
 
 const StyledInput = styled.input`
   width: 300px;
@@ -13,7 +14,7 @@ const StyledInput = styled.input`
   border: solid 0.1rem darkgray;
   font-size: 1rem;
   padding: 0.2rem 0.4rem;
-`;
+`
 
 const StyleButton = styled.button`
   width: 300px;
@@ -24,16 +25,20 @@ const StyleButton = styled.button`
   background: #935DD7;
   color: #fff;
   font-weight: bold;
-`;
+`
 
 const ERC721Mintable = () => {
-  const [dialogText, setDialogText] = useState('');
-  const [isOpen, setIsOpen] = useState(false);
-  const [metadataUri, setMetadataUri] = useState('');
-  const [bps, setBps] = useState('');
-  const [respMsg, setRespMsg] = useState('');
+  const [dialogText, setDialogText] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const [metadataUri, setMetadataUri] = useState('')
+  const [bps, setBps] = useState('')
+  const [respMsg, setRespMsg] = useState('')
 
-  const { contract, user, name } = useContext(EthProvider);
+  // FIXME - need to get this chain name/block explorer nicely.
+  const [name, setName] = useState('fixme')
+  const { chainId } = useWeb3React()
+
+  const { contractInstance, user } = useStore()
 
   const content = useCallback(() => {
     return (
@@ -49,77 +54,78 @@ const ERC721Mintable = () => {
           </div>
         </Dialog.Panel>
       </>
-    );
-  },[dialogText]);
+    )
+  }, [dialogText])
 
   const mint = async () => {
     try {
-      const mintPromise = contract.mint({
+      const mintPromise = contractInstance.mint({
         publicAddress: user.address,
         tokenURI: metadataUri
       })
-      .then((tx) => {
-        setRespMsg(`Tx: ${tx}`)
-        setIsOpen(true);
-        const dialog = `https://${name}.etherscan.io/tx/${tx}`;
-        setDialogText(dialog);
-      }, reason => {
-        setRespMsg(`Reason: ${reason}`)
-      });
+        .then((tx) => {
+          setRespMsg(`Tx: ${tx}`)
+          setIsOpen(true)
+          const dialog = `https://${name}.etherscan.io/tx/${tx}`
+          setDialogText(dialog)
+        }, reason => {
+          setRespMsg(`Reason: ${reason}`)
+        })
 
       toast.promise(
         mintPromise,
         {
-          position: "top-right",
-          pending: "🦄 - Minting Token",
+          position: 'top-right',
+          pending: '🦄 - Minting Token',
           success: `Minted 👌: ${respMsg}`,
           error: `Error 🤯: ${respMsg}`
         }
       ).finally(() => {
-        setIsOpen(false);
-      });
+        setIsOpen(false)
+      })
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
-  };
+  }
 
   const setRoyalties = async () => {
     try {
-      const royaltiesPromise = contract.setRoyalties({
+      const royaltiesPromise = contractInstance.setRoyalties({
         publicAddress: user.address,
         fee: parseInt(bps)
       })
-      .then((tx) => {
-        setRespMsg(`Tx: ${tx}`)
-      }, reason => {
-        setRespMsg(`Reason: ${reason}`)
-      });
+        .then((tx) => {
+          setRespMsg(`Tx: ${tx}`)
+        }, reason => {
+          setRespMsg(`Reason: ${reason}`)
+        })
 
       toast.promise(
         royaltiesPromise,
         {
-          position: "top-right",
-          pending: "🦄 - Setting Roylaties",
+          position: 'top-right',
+          pending: '🦄 - Setting Royalties',
           success: `Set 👌: ${respMsg}`,
           error: `Error 🤯: ${respMsg}`
         }
       ).finally(() => {
-        setIsOpen(false);
-      });
+        setIsOpen(false)
+      })
     } catch (e) {
-      console.log(e);
+      console.log(e)
     }
   }
 
   return (
     <>
       <div>
-        <h3 style={{fontWeight: '900'}}>Interact with your NFT contract <small>({contract.contractAddress}</small>)</h3>
+        <h3 style={{ fontWeight: '900' }}>Interact with your NFT contract <small>({contractInstance.contractAddress}</small>)</h3>
         <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
         <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
         <StyleButton onClick={() => mint()}>Mint</StyleButton>
         <p>To set a royalty, use basis points to determine the percentage. You can calculate bps by multiplying your percentage by 100.
-        <br/>For example, if you want to do 1% of each sale, it would be 100bps. If you want 100% of the sales to go to the artist, it would be 10000 bps.</p>
+          <br />For example, if you want to do 1% of each sale, it would be 100bps. If you want 100% of the sales to go to the artist, it would be 10000 bps.
+        </p>
         <StyledInput placeholder="0-10000 bps" value={bps} onChange={e => setBps(e.target.value)} />
         <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>
       </div>
@@ -127,7 +133,7 @@ const ERC721Mintable = () => {
         {content()}
       </ModalDialog>
     </>
-  );
-};
+  )
+}
 
-export default ERC721Mintable;
+export default ERC721Mintable

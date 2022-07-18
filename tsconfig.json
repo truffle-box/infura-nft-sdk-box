@@ -24,6 +24,9 @@
     "strict": true,
     "allowJs": true,
     "checkJs": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": [
+      "./src/global.d.ts"
+    ]
   }
 }
