@@ -25,15 +25,15 @@ export class SDK {
   /**
    * Get NFTs by an account address
    * @param  {string} address Account address
-   * @param  {string} [includeMetadata=false] flag to include the metadata object in the results
-   * @returns {Promise<object>} List of NFTs with metadata if 'includeMetadata' flag is true
+   * @param  {boolean} [includeMetadata=false] flag to include the metadata object in the results
+   * @returns {Promise<any>} List of NFTs with metadata if 'includeMetadata' flag is true
    */
-  getNFTs({ publicAddress, includeMetadata }: {publicAddress: string, includeMetadata: string}): Promise<object>;
+  getNFTs({ publicAddress, includeMetadata }: {publicAddress: string, includeMetadata: boolean}): Promise<NFTResponse>;
   /** Get list of NFTs for the specified contract address
    * @param {string} contractAddress address of the contract to get the list of NFTs
-   * @returns {Promise<object>} List of NFTs with metadata
+   * @returns {Promise<any>} List of NFTs with metadata
    */
-  getNFTsForCollection({ contractAddress }: string): Promise<object>;
+  getNFTsForCollection({ contractAddress }: string): Promise<NFTResponse>;
   /** Get a token metadata
    * @param {string} contractAddress address of the contract which holds the token
    * @param {number} tokenId ID of the token
@@ -43,6 +43,23 @@ export class SDK {
   #private;
 }
 
+export type NFTResponse =
+  {
+    "pageNumber": number,
+    "network": string,
+    "total": number,
+    "account": string,
+    "type": string,
+    "assets": Array<NFTResponseObject>
+  }
+
+export type NFTResponseObject = {
+  "contract": string,
+  "tokenId": string,
+  "supply": string,
+  "type": string,
+  "metadata": any
+}
 
 export class ERC721Mintable {
   constructor(signer: any);
