@@ -1,6 +1,7 @@
 // @ts-ignore
 import { Auth, SDK } from '@infura/sdk'
 import { useMemo } from 'react'
+import { SUPPORTED_CHAIN_IDS } from 'src/chains'
 import { hooks } from 'src/components/web3/connectors/metaMask'
 
 const { useChainId, useProvider } = hooks
@@ -13,6 +14,10 @@ export function useInfuraSdk (): SDK | undefined {
   return useMemo(() => {
 
     if(!chainId || !provider) return undefined;
+
+    if(!SUPPORTED_CHAIN_IDS.includes(chainId)){
+      return undefined
+    }
 
     const auth = new Auth({
       projectId: process.env.REACT_APP_INFURA_PROJECT_ID,

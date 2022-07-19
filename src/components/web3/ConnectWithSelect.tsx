@@ -5,7 +5,7 @@ import { Network } from '@web3-react/network'
 import React, { useCallback, useState } from 'react'
 // @ts-ignore
 import fox from 'src/assets/fox.svg'
-import { CHAINS, getAddChainParameters, URLS } from 'src/chains'
+import { CHAINS, getAddChainParameters, SUPPORTED_CHAIN_IDS, URLS } from 'src/chains'
 import { Accounts } from 'src/components/atoms/Accounts'
 import { Chain } from 'src/components/atoms/Chain'
 import { Status } from 'src/components/atoms/Status'
@@ -62,7 +62,8 @@ export function ConnectWithSelect ({
 
   const isNetwork = connector instanceof Network
   const displayDefault = !isNetwork
-  const chainIds = (isNetwork ? Object.keys(URLS) : Object.keys(CHAINS)).map((chainId) => Number(chainId))
+  // const chainIds = (isNetwork ? Object.keys(URLS) : Object.keys(CHAINS)).map((chainId) => Number(chainId))
+  const chainIds = SUPPORTED_CHAIN_IDS;
   const [desiredChainId, setDesiredChainId] = useState<number>(isNetwork ? 1 : -1)
 
   const tryActivate = useCallback((_desiredChainId: number) => {

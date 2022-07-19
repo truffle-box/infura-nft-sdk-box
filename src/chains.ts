@@ -43,7 +43,9 @@ export function getAddChainParameters(chainId: number): AddEthereumChainParamete
   }
 }
 
-export const CHAINS: { [chainId: number]: BasicChainInformation | ExtendedChainInformation } = {
+type ChainTypes = { [chainId: number]: BasicChainInformation | ExtendedChainInformation }
+
+export const CHAINS: ChainTypes = {
   1: {
     urls: [
       process.env.infuraKey ? `https://mainnet.infura.io/v3/${process.env.infuraKey}` : '',
@@ -146,3 +148,8 @@ export const URLS: { [chainId: number]: string[] } = Object.keys(CHAINS).reduce<
   },
   {}
 )
+
+export const SUPPORTED_CHAIN_IDS = [ 1, 3, 4, 5];
+
+// USE THIS TO ONLY GET THE CHAINS WE WANT TO WORK WITH
+export const SUPPORTED_CHAINS: ChainTypes = SUPPORTED_CHAIN_IDS.reduce((obj, key) => ({...obj, [key]: CHAINS[key]}), {});

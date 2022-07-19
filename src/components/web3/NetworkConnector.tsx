@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { SUPPORTED_CHAIN_IDS } from 'src/chains'
 import { Chain } from 'src/components/atoms/Chain'
 import { Status } from 'src/components/atoms/Status'
 import { hooks, metaMask } from './connectors/metaMask'
@@ -19,6 +20,14 @@ const NetworkConnector = () => {
       console.debug('Failed to connect eagerly to metamask')
     })
   }, [])
+
+  useEffect(() => {
+    if(chainId && !SUPPORTED_CHAIN_IDS.includes(chainId)){
+      const errMsg = "Unsupported ChainID: " + chainId
+      console.error(errMsg)
+      setError(new Error(errMsg))
+    }
+  }, [chainId])
 
   return (
     <>
