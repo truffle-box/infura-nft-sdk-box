@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react'
+import { classNames } from 'utils'
 
 import ERC721MintableForm from './ERC721MintableForm'
-import ERC721UserMintableForm from './ERC721UserMintableForm'
-import { classNames } from '../utils'
+import ERC721UserMintableForm from 'components/molecules/ERC721UserMintableForm'
 import { Dialog } from '@headlessui/react'
 import ModalDialog from '../organisms/ModalDialog'
 
@@ -10,6 +10,10 @@ const CategorySelectorModal = ({
   categories,
   selectedCategory,
   setSelectedCategory
+}:{
+  categories: string[],
+  selectedCategory: string;
+  setSelectedCategory: (v: string) => void
 }) => {
   let [isOpen, setIsOpen] = useState(false)
 
@@ -34,7 +38,7 @@ const CategorySelectorModal = ({
     )
   }, [selectedCategory])
 
-  const clickButton = (idx) => {
+  const clickButton = (idx: number) => {
     setSelectedCategory(categories[idx])
     setIsOpen(true)
   }

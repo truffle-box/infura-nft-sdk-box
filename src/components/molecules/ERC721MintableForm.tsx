@@ -1,18 +1,21 @@
-import React, { useRef, useState } from 'react'
-import { LabeledInput as Input } from '../atoms/Input'
+// @ts-ignore
 import { TEMPLATES } from '@infura/sdk'
+import { ERC721Mintable } from 'global'
+import React, { FormEvent, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
-import { useInfuraSdk } from '../../hooks/useInfuraSdk'
-import { useStore } from '../../state'
+import { useInfuraSdk } from 'hooks/useInfuraSdk'
+import { useStore } from 'state'
+import { LabeledInput as Input } from '../atoms/Input'
 
-const ERC721MintableForm = ({ setIsOpen }) => {
+const ERC721MintableForm = ({ setIsOpen }: { setIsOpen: (val: boolean) => void }) => {
   const sdk = useInfuraSdk()
-  const { setContract } = useStore()
+  const { setContract, setContractInstance, contract } = useStore()
 
   const [selectedName, setSelectedName] = useState('')
   const [selectedSymbol, setSelectedSymbol] = useState('')
   const [selectedContractUri, setSelectedContractUri] = useState('')
-  const formRef = useRef()
+  const [isError, setIsError] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
 
   const [respMsg, setRespMsg] = useState('')
 
@@ -40,7 +43,7 @@ const ERC721MintableForm = ({ setIsOpen }) => {
     }
   ]
 
-  const wenSubmit = async (e) => {
+  const wenSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       if (sdk) {
@@ -52,25 +55,27 @@ const ERC721MintableForm = ({ setIsOpen }) => {
             contractURI: selectedContractUri
           }
         })
-          .then((contract) => {
+          .then((contract: ERC721Mintable) => {
             // TODO: this is a complex contract object, not an address. Can't be put in state.
-            setRespMsg(`Address: ${contract}`)
-            setContract(contract.address, contract.getTemplate())
-          }, reason => {
-            setRespMsg(`Reason: ${reason}`)
+            setRespMsg(`Address: ${contract.contractAddress}`)
+            setContract(contract.contractAddress, contract.getTemplate())
+            setContractInstance(contract)
+            setIsError(false)
           })
 
-        toast.promise(
+        await toast.promise(
           contractDeploymentPromise,
           {
-            position: 'top-right',
             pending: '🦄 - Contract Deploying',
             success: `Deployed 👌: ${respMsg}`,
             error: `Error 🤯: ${respMsg}`
+          }, {
+            position: 'top-right'
           }
-        ).finally(() => {
-          setIsOpen(false)
-        })
+        )
+          .finally(() => {
+            setIsOpen(false)
+          })
       } else {
         toast.error(' 🤯: No SDK Present/Configured')
       }
@@ -79,7 +84,7 @@ const ERC721MintableForm = ({ setIsOpen }) => {
     }
   }
 
-  const setValue = (name, value) => {
+  const setValue = (name: string, value: string) => {
     switch (name) {
       case 'name':
         setSelectedName(value)
@@ -106,7 +111,7 @@ const ERC721MintableForm = ({ setIsOpen }) => {
               label={input.label}
               key={`input no. ${idx}`}
               description={input.description}
-              onChange={(event) => setValue(input.name, event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValue(input.name, event.target.value)}
             />
           ))}
         </fieldset>
@@ -115,6 +120,11 @@ const ERC721MintableForm = ({ setIsOpen }) => {
           <input type="submit" value="Deploy" />
         </div>
       </form>
+      <div>
+        Error?: {isError}<br />
+        Message: {respMsg}<br />
+        Selected Contract : {contract?.address}<br />
+      </div>
     </>
   )
 }

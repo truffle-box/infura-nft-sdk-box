@@ -7,26 +7,34 @@
     "scripts/mint.d.ts"
   ],
   "compilerOptions": {
-    "target": "ESNext",
-    "jsx": "react-jsx",
-    // "lib": [],
-    "baseUrl": "./",
-    "sourceRoot": "./src",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@/*": ["./src/*"]
-    },
-    "module": "commonjs",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "target": "es5",
+
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "allowJs": true,
-    "checkJs": false,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
     "skipLibCheck": true,
-    "types": [
-      "./src/global.d.ts"
-    ]
-  }
+    "strict": true,
+
+    "baseUrl": "src",
+    "sourceRoot": "./src",
+    "sourceMap": true,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "checkJs": false,
+  },
+  "include": [
+    "src"
+  ]
 }

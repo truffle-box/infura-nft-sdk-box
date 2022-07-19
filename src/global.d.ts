@@ -1,8 +1,5 @@
 import { ethers } from "ethers";
 
-declare module "@infura/sdk";
-
-
 export class SDK {
   constructor(auth: any);
   /**
@@ -11,14 +8,14 @@ export class SDK {
    * @param {object} params template parameters (name, symbol, contractURI, ...)
    * @returns {Promise<ERC721Mintable>} Contract instance
    */
-  deploy({ template, params }: string): Promise<ERC721Mintable>;
+  deploy({ template, params }: {template: string, params: object }): Promise<ERC721Mintable>;
   /**
    * Load a contract from an existing contract address and a template
    * @param {string} template name of the template to use (ERC721Mintable, ...)
    * @param {string} contractAddress address of the contract to load
    * @returns {Promise<ERC721Mintable>} Contract instance
    */
-  loadContract({ template, contractAddress }: string): Promise<ERC721Mintable>;
+  loadContract({ template, contractAddress }: {template: string, contractAddress: string }): Promise<ERC721Mintable>;
   /**
    * Get contract metadata by contract address
    * @param {string} contractAddress
@@ -31,7 +28,7 @@ export class SDK {
    * @param  {string} [includeMetadata=false] flag to include the metadata object in the results
    * @returns {Promise<object>} List of NFTs with metadata if 'includeMetadata' flag is true
    */
-  getNFTs({ publicAddress, includeMetadata }: string): Promise<object>;
+  getNFTs({ publicAddress, includeMetadata }: {publicAddress: string, includeMetadata: string}): Promise<object>;
   /** Get list of NFTs for the specified contract address
    * @param {string} contractAddress address of the contract to get the list of NFTs
    * @returns {Promise<object>} List of NFTs with metadata

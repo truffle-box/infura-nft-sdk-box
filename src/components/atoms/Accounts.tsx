@@ -2,8 +2,8 @@ import type { BigNumber } from '@ethersproject/bignumber'
 import type { Web3ReactHooks } from '@web3-react/core'
 import Avvvatars from 'avvvatars-react'
 import { useEffect, useState } from 'react'
-import { hooks } from 'src/components/web3/connectors/metaMask'
-import { shortenAddress } from 'src/utils'
+import { hooks } from 'components/web3/connectors/metaMask'
+import { shortenAddress } from 'utils'
 
 const { useIsActive, useProvider, useAccount, useENSName } = hooks
 

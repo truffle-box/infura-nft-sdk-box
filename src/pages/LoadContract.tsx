@@ -1,9 +1,10 @@
-import React, { useCallback, useRef, useState } from 'react'
-import CategorySelector from '../components/molecules/CategorySelector'
-import { LabeledInput as Input } from '../components/atoms/Input'
+// @ts-ignore
 import { TEMPLATES } from '@infura/sdk'
-import { useInfuraSdk } from '../hooks/useInfuraSdk'
-import { useStore } from '../state'
+import React, { FormEvent, useCallback, useRef, useState } from 'react'
+import CategorySelector from 'components/molecules/CategorySelector'
+import { LabeledInput as Input } from 'components/atoms/Input'
+import { useInfuraSdk } from 'hooks/useInfuraSdk'
+import { useStore } from 'state'
 
 const LoadContract = () => {
 
@@ -12,22 +13,26 @@ const LoadContract = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedContract, setSelectedContract] = useState('')
-  const formRef = useRef()
+  const formRef = useRef<HTMLFormElement>(null)
 
   const templates = ['Unlimited']
 
-  const wenSubmit = useCallback(() => async (e) => {
-    if (!sdk) return undefined
-
+  const wenSubmit = useCallback(() => async (e: FormEvent<HTMLFormElement>) => {
+    if (!sdk) {
+      alert('No Infura SDK configured!')
+      return
+    }
     if (!selectedCategory) {
       alert('Please select a template')
       return
     }
+
     e.preventDefault()
     const contract = await sdk.loadContract({
       template: TEMPLATES.ERC721Mintable,
       contractAddress: selectedContract
     })
+
     setContractInstance(contract)
   }, [sdk])
 
@@ -51,7 +56,7 @@ const LoadContract = () => {
             placeholder="0x..."
             label="Contract Address"
             description="This is the contract address previously deployed"
-            onChange={(event) => setSelectedContract(event.target.value)}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSelectedContract(event.target.value)}
           />
           <input type="submit" value="Load" />
         </form>

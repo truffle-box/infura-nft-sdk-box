@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { SUPPORTED_CHAIN_IDS } from 'src/chains'
-import { Chain } from 'src/components/atoms/Chain'
-import { Status } from 'src/components/atoms/Status'
+import { SUPPORTED_CHAIN_IDS } from 'chains'
+import { Chain } from 'components/atoms/Chain'
+import { Status } from 'components/atoms/Status'
 import { hooks, metaMask } from './connectors/metaMask'
 import { ConnectWithSelect } from './ConnectWithSelect'
 
@@ -22,8 +22,8 @@ const NetworkConnector = () => {
   }, [])
 
   useEffect(() => {
-    if(chainId && !SUPPORTED_CHAIN_IDS.includes(chainId)){
-      const errMsg = "Unsupported ChainID: " + chainId
+    if (chainId && !SUPPORTED_CHAIN_IDS.includes(chainId)) {
+      const errMsg = 'Unsupported ChainID: ' + chainId
       console.error(errMsg)
       setError(new Error(errMsg))
     }

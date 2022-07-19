@@ -1,13 +1,13 @@
 import React from "react";
 import { HashRouter, Route, Routes } from "react-router-dom";
-import Layout from "./pages/Layout";
-import Main from "./pages/Main";
-import Gallery from "./pages/Gallery";
+import Layout from "pages/Layout";
+import Main from "pages/Main";
+import Gallery from "pages/Gallery";
 import "./App.css";
-import AddContract from "./pages/AddContract";
-import LoadContract from "./pages/LoadContract";
-import Contract from "./pages/Contract";
-import NoMatch from "./pages/NoMatch";
+import AddContract from "pages/AddContract";
+import LoadContract from "pages/LoadContract";
+import Contract from "pages/Contract";
+import NoMatch from "pages/NoMatch";
 import 'react-toastify/dist/ReactToastify.min.css';
 
 const App = () => {

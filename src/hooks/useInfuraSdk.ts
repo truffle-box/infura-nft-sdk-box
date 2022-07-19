@@ -1,8 +1,9 @@
 // @ts-ignore
-import { Auth, SDK } from '@infura/sdk'
+import {Auth, SDK as InfuraSDK} from '@infura/sdk'
+import { SDK } from 'global'
 import { useMemo } from 'react'
-import { SUPPORTED_CHAIN_IDS } from 'src/chains'
-import { hooks } from 'src/components/web3/connectors/metaMask'
+import { SUPPORTED_CHAIN_IDS } from 'chains'
+import { hooks } from 'components/web3/connectors/metaMask'
 
 const { useChainId, useProvider } = hooks
 
@@ -13,19 +14,18 @@ export function useInfuraSdk (): SDK | undefined {
 
   return useMemo(() => {
 
-    if(!chainId || !provider) return undefined;
+    if (!chainId || !provider) return undefined
 
-    if(!SUPPORTED_CHAIN_IDS.includes(chainId)){
+    if (!SUPPORTED_CHAIN_IDS.includes(chainId)) {
       return undefined
     }
-
     const auth = new Auth({
       projectId: process.env.REACT_APP_INFURA_PROJECT_ID,
       secretId: process.env.REACT_APP_INFURA_PROJECT_SECRET,
       chainId,
-      provider
+      provider: provider.provider
     })
 
-    return new SDK(auth)
+    return new InfuraSDK(auth)
   }, [chainId, provider])
 }

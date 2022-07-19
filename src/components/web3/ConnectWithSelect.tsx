@@ -4,12 +4,12 @@ import type { MetaMask } from '@web3-react/metamask'
 import { Network } from '@web3-react/network'
 import React, { useCallback, useState } from 'react'
 // @ts-ignore
-import fox from 'src/assets/fox.svg'
-import { CHAINS, getAddChainParameters, SUPPORTED_CHAIN_IDS, URLS } from 'src/chains'
-import { Accounts } from 'src/components/atoms/Accounts'
-import { Chain } from 'src/components/atoms/Chain'
-import { Status } from 'src/components/atoms/Status'
-import ModalDialog from 'src/components/organisms/ModalDialog'
+import fox from 'assets/fox.svg'
+import { CHAINS, getAddChainParameters, SUPPORTED_CHAIN_IDS } from 'chains'
+import { Accounts } from 'components/atoms/Accounts'
+import { Chain } from 'components/atoms/Chain'
+import { Status } from 'components/atoms/Status'
+import ModalDialog from 'components/organisms/ModalDialog'
 
 function ChainSelect ({
   chainId,
@@ -63,7 +63,7 @@ export function ConnectWithSelect ({
   const isNetwork = connector instanceof Network
   const displayDefault = !isNetwork
   // const chainIds = (isNetwork ? Object.keys(URLS) : Object.keys(CHAINS)).map((chainId) => Number(chainId))
-  const chainIds = SUPPORTED_CHAIN_IDS;
+  const chainIds = SUPPORTED_CHAIN_IDS
   const [desiredChainId, setDesiredChainId] = useState<number>(isNetwork ? 1 : -1)
 
   const tryActivate = useCallback((_desiredChainId: number) => {

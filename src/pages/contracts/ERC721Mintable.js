@@ -1,10 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { Dialog } from '@headlessui/react'
 import ModalDialog from '../../components/organisms/ModalDialog'
 import { toast } from 'react-toastify'
 import { useStore } from '../../state'
-import { useWeb3React } from '@web3-react/core'
+import { useInfuraSdk } from '../../hooks/useInfuraSdk'
+import { hooks } from '../../components/web3/connectors/metaMask'
 
 const StyledInput = styled.input`
   width: 300px;
@@ -27,6 +28,8 @@ const StyleButton = styled.button`
   font-weight: bold;
 `
 
+const { useAccount } = hooks
+
 const ERC721Mintable = () => {
   const [dialogText, setDialogText] = useState('')
   const [isOpen, setIsOpen] = useState(false)
@@ -36,9 +39,24 @@ const ERC721Mintable = () => {
 
   // FIXME - need to get this chain name/block explorer nicely.
   const [name, setName] = useState('fixme')
-  const { chainId } = useWeb3React()
 
-  const { contractInstance, user } = useStore()
+  const { contract, contractInstance, setContractInstance } = useStore()
+  const publicAddress = useAccount()
+  const sdk = useInfuraSdk()
+
+  useEffect(() => {
+    async function loadContractInstance () {
+      const val = await sdk.loadContract({ template: contract.template, contractAddress: contract.address })
+      console.log(`loadContractInstance: `, { val })
+      setContractInstance(val)
+      return 'loaded contract instance'
+    }
+
+    if (!contractInstance && sdk && contract) {
+      console.log(`contractInstance is null: `, { contract, contractInstance, sdk })
+      loadContractInstance().then(value => {console.log(`output: `, { value })})
+    }
+  }, [contract, contractInstance, sdk])
 
   const content = useCallback(() => {
     return (
@@ -60,7 +78,7 @@ const ERC721Mintable = () => {
   const mint = async () => {
     try {
       const mintPromise = contractInstance.mint({
-        publicAddress: user.address,
+        publicAddress: publicAddress,
         tokenURI: metadataUri
       })
         .then((tx) => {
@@ -91,7 +109,7 @@ const ERC721Mintable = () => {
   const setRoyalties = async () => {
     try {
       const royaltiesPromise = contractInstance.setRoyalties({
-        publicAddress: user.address,
+        publicAddress: publicAddress,
         fee: parseInt(bps)
       })
         .then((tx) => {
@@ -119,15 +137,23 @@ const ERC721Mintable = () => {
   return (
     <>
       <div>
-        <h3 style={{ fontWeight: '900' }}>Interact with your NFT contract <small>({contractInstance.contractAddress}</small>)</h3>
+        <h3 style={{ fontWeight: '900' }}>Interact with your NFT contract <small>({contract.address}</small>)</h3>
         <p>To mint a new NFT, simply paste in the metadata URI below and press mint.</p>
+        <div className={'w-fit border border-gray-400 font-mono text-xs m-4 border bg-white rounded-2xl p-4'}>Public
+          Address: {publicAddress}<br />
+          ContractAddress: {contract.address}<br />
+          Template: {contract.template}<br />
+          Instance Loaded: {contractInstance?.contractAddress}</div>
         <StyledInput placeholder="ipfs://" value={metadataUri} onChange={e => setMetadataUri(e.target.value)} />
-        <StyleButton onClick={() => mint()}>Mint</StyleButton>
+        {contractInstance && <StyleButton onClick={() => mint()}>Mint</StyleButton>}
+        {!contractInstance && <div>error loading contract instance: {respMsg}</div>}
         <p>To set a royalty, use basis points to determine the percentage. You can calculate bps by multiplying your percentage by 100.
           <br />For example, if you want to do 1% of each sale, it would be 100bps. If you want 100% of the sales to go to the artist, it would be 10000 bps.
         </p>
         <StyledInput placeholder="0-10000 bps" value={bps} onChange={e => setBps(e.target.value)} />
-        <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>
+        {contractInstance && <StyleButton onClick={() => setRoyalties()}>Set Royalties</StyleButton>}
+        {!contractInstance && <div>error loading contract instance: {respMsg}</div>}
+
       </div>
       <ModalDialog isOpen={isOpen} onDismiss={() => setIsOpen(false)}>
         {content()}

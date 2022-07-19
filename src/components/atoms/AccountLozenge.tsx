@@ -1,5 +1,5 @@
 import Avvvatars from 'avvvatars-react'
-import { shortenAddress } from 'src/utils'
+import { shortenAddress } from 'utils'
 
 const AccountLozenge = ({address, ensName, avatar}: {
   address: string | undefined,

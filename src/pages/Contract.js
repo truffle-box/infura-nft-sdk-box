@@ -1,14 +1,14 @@
-import { TEMPLATES } from "@infura/sdk";
-import React, { useContext } from "react";
-import { EthProvider } from "../ethereum";
-import ERC721Mintable from "./contracts/ERC721Mintable";
+import { TEMPLATES } from '@infura/sdk'
+import React from 'react'
+import ERC721Mintable from './contracts/ERC721Mintable'
+import { useStore } from '../state'
 
 const Contract = () => {
-  const { contract } = useContext(EthProvider);
+  const {contract} = useStore();
 
   return (
-    <>{contract.getTemplate() === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
-  );
-};
+    <>{contract.template === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
+  )
+}
 
-export default Contract;
+export default Contract

@@ -1,17 +1,17 @@
-import React, { useRef, useState } from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
+import { useInfuraSdk } from 'hooks/useInfuraSdk'
 import { LabeledInput as Input } from '../atoms/Input'
-import { useInfuraSdk } from '../../hooks/useInfuraSdk'
 
-const ERC721UserMintableForm = ({ setIsOpen }) => {
+const ERC721UserMintableForm = ({ setIsOpen }: { setIsOpen: (v: boolean) => void }) => {
   const sdk = useInfuraSdk()
 
   const [selectedName, setSelectedName] = useState('')
   const [selectedSymbol, setSelectedSymbol] = useState('')
   const [selectedBaseUri, setSelectedBaseUri] = useState('')
-  const [selectedMaxSupply, setSelectedMaxsupply] = useState(0)
-  const [selectedPrice, setSelectedPrice] = useState(0)
+  const [selectedMaxSupply, setSelectedMaxsupply] = useState('0')
+  const [selectedPrice, setSelectedPrice] = useState('0')
   const [selectedContractUri, setSelectedContractUri] = useState('')
-  const formRef = useRef()
+  const formRef = useRef<HTMLFormElement>(null)
 
   const inputs = [
     {
@@ -58,13 +58,12 @@ const ERC721UserMintableForm = ({ setIsOpen }) => {
     }
   ]
 
-  const wenSubmit = async (e) => {
+  const wenSubmit = async (e: FormEvent<HTMLFormElement>) => {
     // USE SDK now here.
-
     e.preventDefault()
     console.log('submitting via sdk: ', { sdk })
   }
-  const setValue = (name, value) => {
+  const setValue = (name: string, value: string) => {
     switch (name) {
       case 'name':
         setSelectedName(value)
@@ -75,7 +74,7 @@ const ERC721UserMintableForm = ({ setIsOpen }) => {
       case 'base_uri':
         setSelectedBaseUri(value)
         return
-      case 'max_suuply':
+      case 'max_supply':
         setSelectedMaxsupply(value)
         return
       case 'price':
@@ -100,7 +99,7 @@ const ERC721UserMintableForm = ({ setIsOpen }) => {
               label={input.label}
               key={`input no. ${idx}`}
               description={input.description}
-              onChange={(event) => setValue(input.name, event.target.value)}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValue(input.name, event.target.value)}
             />
           ))}
         </fieldset>

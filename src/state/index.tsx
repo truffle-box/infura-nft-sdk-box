@@ -1,14 +1,14 @@
+import { ERC721Mintable } from 'global'
 import * as lodash from 'lodash'
-import { ERC721Mintable } from 'src/global'
 import create from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type AppState = {
-  // ERC721Mintable from SDK
   contract: {
     address: string | null,
     template: string | null,
   },
+  // we need to omit this in persisting as its a complex object.
   contractInstance: ERC721Mintable | null,
   isLoading: boolean,
   isConnected: boolean,
@@ -59,7 +59,13 @@ export const useStore = create<NftAppState>()(
         template
       }
     })),
-    setContractInstance: contractInstance => set((_state) => ({ contractInstance })),
+    setContractInstance: contractInstance => set((_state) => ({
+      contract: {
+        address: contractInstance.contractAddress,
+        template: contractInstance.getTemplate()
+      },
+      contractInstance
+    })),
     setChainId: (chainId) => set((_state) => ({ chainId })),
     setUser: (user) => set((_state) => ({ user }))
   }), {
