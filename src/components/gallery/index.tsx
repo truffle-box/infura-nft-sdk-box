@@ -40,8 +40,7 @@ const GalleryView = () => {
       includeMetadata: true
     })
 
-    console.log(`GalleryView NFTs: `, { data, contract, userAccount })
-    const items = data.assets.reduce((listNfts: any[], nft) => {
+    const items = data.assets.reduce((listNfts, nft) => {
       /*
        {
        "pageNumber": 1,
@@ -70,8 +69,7 @@ const GalleryView = () => {
         return [...listNfts]
       }
       return [...listNfts]
-    }, [])
-
+    }, new Array<NFTResponseObject>())
     setItems(items)
     setIsLoading(false)
   }, [sdk, contract])
@@ -82,7 +80,7 @@ const GalleryView = () => {
     } else {
       setItems([])
     }
-  }, [start, userAccount])
+  }, [sdk, contract, start, userAccount])
 
   return (<>
     {isLoading ? <div>Loading...</div> : items.length > 0 ?

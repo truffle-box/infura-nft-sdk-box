@@ -1,23 +1,25 @@
 // @ts-ignore
 import { TEMPLATES } from '@infura/sdk'
-import React, { FormEvent, useCallback, useRef, useState } from 'react'
-import CategorySelector from 'components/molecules/CategorySelector'
 import { LabeledInput as Input } from 'components/atoms/Input'
+import CategorySelector from 'components/molecules/CategorySelector'
 import { useInfuraSdk } from 'hooks/useInfuraSdk'
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
 import { useStore } from 'state'
 
 const LoadContract = () => {
 
   const sdk = useInfuraSdk()
-  const { setContractInstance } = useStore()
+  const { setContractInstance, setContract } = useStore()
 
+  const [formDisabled, setFormDisabled] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedContract, setSelectedContract] = useState('')
+  const [message, setMessage] = useState<string>()
   const formRef = useRef<HTMLFormElement>(null)
 
   const templates = ['Unlimited']
 
-  const wenSubmit = useCallback(() => async (e: FormEvent<HTMLFormElement>) => {
+  const wenSubmit = async (e: FormEvent<HTMLFormElement>) => {
     if (!sdk) {
       alert('No Infura SDK configured!')
       return
@@ -26,15 +28,28 @@ const LoadContract = () => {
       alert('Please select a template')
       return
     }
+    if (!selectedContract) {
+      alert('Please enter a contract address')
+      return
+    }
 
     e.preventDefault()
     const contract = await sdk.loadContract({
       template: TEMPLATES.ERC721Mintable,
       contractAddress: selectedContract
     })
+    if (contract) {
+      setContractInstance(contract)
+      setContract(contract.contractAddress, contract.getTemplate())
+      setMessage('Contract Loaded Successfully')
+    } else {
+      setMessage('Error loading contract')
+    }
+  }
 
-    setContractInstance(contract)
-  }, [sdk])
+  useEffect(() => {
+    setFormDisabled(!(sdk && selectedCategory !== '' && selectedContract !== ''))
+  }, [sdk, selectedCategory, selectedContract, setFormDisabled])
 
   return (
     <>
@@ -58,7 +73,9 @@ const LoadContract = () => {
             description="This is the contract address previously deployed"
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setSelectedContract(event.target.value)}
           />
-          <input type="submit" value="Load" />
+          {formDisabled && <div className={'text-red-600 p-4 text-lg'}>Please select a Category and Contract address.</div>}
+          {!formDisabled && <input type="submit" value="Load" disabled={formDisabled} />}
+          {message && <div className={'p-4 text-lg'}>{message}</div>}
         </form>
       </fieldset>
     </>
