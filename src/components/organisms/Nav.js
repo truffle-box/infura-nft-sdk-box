@@ -1,22 +1,20 @@
 import React, { useContext } from "react";
-
-import { EthProvider } from "../../ethereum";
 import MenuLink from "../atoms/MenuLink";
 import add from "../../assets/add.svg";
 import categories from "../../assets/categories.svg";
-import icon_stars from "../../assets/icon_stars.svg";
 import nft from "../../assets/nft.svg";
 import protocols from "../../assets/protocols.svg";
-import { useSelector } from "react-redux";
+import icon_stars from "../../assets/icon_stars.svg";
+import { EthProvider } from "../../ethereum";
 
 const Nav = () => {
-  const contract = useSelector((state) => state.contract);
+  const { contract } = useContext(EthProvider);
 
   return (
     <nav>
       <MenuLink link="/" name="Home" icon={categories} />
       <div className="relative left-2">
-        {contract.address && (
+        {contract && (
           <MenuLink link="/contract" name="Contract" icon={icon_stars} />
         )}
         <MenuLink link="/gallery" name="Album" icon={nft} />

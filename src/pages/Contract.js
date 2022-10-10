@@ -1,13 +1,13 @@
-import ERC721Mintable from "./contracts/ERC721Mintable";
-import React from "react";
 import { TEMPLATES } from "@infura/sdk";
-import { useSelector } from "react-redux";
+import React, { useContext } from "react";
+import { EthProvider } from "../ethereum";
+import ERC721Mintable from "./contracts/ERC721Mintable";
 
 const Contract = () => {
-  const contract = useSelector((state) => state.contract);
+  const { contract } = useContext(EthProvider);
 
   return (
-    <>{contract.type === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
+    <>{contract.getTemplate() === TEMPLATES.ERC721Mintable && <ERC721Mintable />}</>
   );
 };
 

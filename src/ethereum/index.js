@@ -1,34 +1,28 @@
-import { Auth, SDK } from "@infura/sdk";
-import React, { createContext, useCallback, useEffect } from "react";
-import { disconnectUser, setUser } from "../redux/userSlice.js";
-
-import { disconnectContract } from "../redux/contractSlice.js";
+import React, { createContext, useEffect, useCallback } from "react";
 import { ethers } from "ethers";
+import { useImmerReducer } from "use-immer";
 import { initialState } from "./initialState.js";
 import { reducer } from "../reducers";
-import { useDispatch } from "react-redux";
-import { useImmerReducer } from "use-immer";
+import { Auth, SDK } from "@infura/sdk";
 
 export const EthProvider = createContext(initialState);
 
 export const Provider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState);
-  const dispatchRedux = useDispatch();
 
   const setAccount = useCallback(
-    async (accounts) => {
+    async (provider, accounts, networkName, chainId) => {
       if (accounts.length > 0) {
         try {
           const connectedAccount = {
             address: accounts[0],
           };
-          dispatchRedux(setUser(connectedAccount));
+          dispatch({ type: "SET_ACCOUNT", payload: connectedAccount });
         } catch (e) {
           console.log(e);
         }
       } else {
-        dispatchRedux(disconnectUser());
-        dispatchRedux(disconnectContract());
+        dispatch({ type: "SET_ACCOUNT", payload: initialState.user });
       }
     },
     [dispatch]
@@ -43,6 +37,8 @@ export const Provider = ({ children }) => {
         const accounts = await window.ethereum.request({
           method: "eth_accounts",
         });
+
+        console.log(process.env);
         const auth = new Auth({
           projectId: process.env.REACT_APP_INFURA_PROJECT_ID,
           secretId: process.env.REACT_APP_INFURA_PROJECT_SECRET,
@@ -50,7 +46,7 @@ export const Provider = ({ children }) => {
           provider: window.ethereum,
         });
         const sdk = new SDK(auth);
-        setAccount(accounts);
+        setAccount(provider, accounts, name, chainId);
         dispatch({
           type: "CONNECTED_PROVIDER",
           payload: {
@@ -82,14 +78,23 @@ export const Provider = ({ children }) => {
     }
   }, [connectUser, dispatch]);
 
-  const { name, chainId, provider, sdk } = state;
+  const {
+    isLoading,
+    isConnected,
+    name,
+    chainId,
+    provider,
+    user,
+    sdk,
+    contract,
+  } = state;
 
   const connect = async () => {
     try {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      setAccount(accounts);
+      setAccount(provider, accounts);
     } catch (e) {
       console.log(e);
     }
@@ -100,10 +105,14 @@ export const Provider = ({ children }) => {
       value={{
         state,
         dispatch,
+        isLoading,
+        isConnected,
         provider,
+        user,
         name,
         chainId,
         sdk,
+        contract,
         actions: { connect },
       }}
     >

@@ -1,8 +1,8 @@
+import React, { useContext } from "react";
 import Avvvatars from "avvvatars-react";
-import React from "react";
-import { formatAddress } from "../../utils";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { EthProvider } from "../../ethereum";
+import { formatAddress } from "../../utils";
 
 const Wrap = styled.div`
   height: 48px;
@@ -34,7 +34,7 @@ const JazziconWrap = styled.div`
 `;
 
 const Account = () => {
-  const user = useSelector((state) => state.user.user);
+  const { user } = useContext(EthProvider);
   const { address, avatar, ens } = user;
 
   return (

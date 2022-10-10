@@ -8,18 +8,19 @@ NFT all the things wtih the [Infura NFT SDK](https://www.npmjs.com/package/@infu
 $ npm i
 ```
 
-Create a `.env` in the root of a project and add your project ID and project secret as per the following: 
+Create a `.env` in the root of a project and add your project ID and project secret as per the following:
 
 ```
 REACT_APP_INFURA_PROJECT_ID=your-project-id
 REACT_APP_INFURA_PROJECT_SECRET=your-project-secret
+REACT_APP_IPFS_GATEWAY=your-ipfs-gateway
 ```
 
 ## Running
 
 ```
 $ npm run start
-``` 
+```
 
 ## Assets
 
