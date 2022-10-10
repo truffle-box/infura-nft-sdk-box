@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import CategorySelector from "../components/molecules/CategorySelector";
 import { EthProvider } from "../ethereum";
@@ -8,6 +8,7 @@ import { setContract } from "../redux/contractSlice";
 import styled from "styled-components";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 const LoadButton = styled.input`
   margin-left: 10px;
@@ -15,6 +16,7 @@ const LoadButton = styled.input`
 
 const LoadContract = () => {
   const { sdk } = useContext(EthProvider);
+  const contract = useSelector((state) => state.contract);
 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedContract, setSelectedContract] = useState("");
@@ -34,10 +36,15 @@ const LoadContract = () => {
         template: TEMPLATES.ERC721Mintable,
         contractAddress: selectedContract,
       });
+      const metaData = await sdk.getContractMetadata({
+        contractAddress: contract.contractAddress,
+      });
+
       dispatchRedux(
         setContract({
           address: contract.contractAddress,
           type: TEMPLATES.ERC721Mintable,
+          metaData,
         })
       );
     };
@@ -45,7 +52,9 @@ const LoadContract = () => {
     toast.promise(load, {
       position: "top-right",
       pending: "🦄 - Loading",
-      success: `Loaded 👌`,
+      success: contract.metaData
+        ? `Contract ${contract.metaData.name} loaded 👌`
+        : `Loaded 👌`,
       error: `Error 🤯`,
     });
   };
