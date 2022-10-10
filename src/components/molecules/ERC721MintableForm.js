@@ -1,15 +1,20 @@
 import React, { useContext, useRef, useState } from "react";
-import { LabeledInput as Input } from "../atoms/Input";
+
 import { EthProvider } from "../../ethereum";
+import { LabeledInput as Input } from "../atoms/Input";
 import { TEMPLATES } from "@infura/sdk";
+import { setContract } from "../../redux/contractSlice";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 
 const ERC721MintableForm = ({ setIsOpen }) => {
-  const { dispatch, sdk } = useContext(EthProvider);
+  const { sdk } = useContext(EthProvider);
   const [selectedName, setSelectedName] = useState("");
   const [selectedSymbol, setSelectedSymbol] = useState("");
   const [selectedContractUri, setSelectedContractUri] = useState("");
   const formRef = useRef();
+
+  const dispatchRedux = useDispatch();
 
   const [respMsg, setRespMsg] = useState("");
 
@@ -19,59 +24,62 @@ const ERC721MintableForm = ({ setIsOpen }) => {
       description: "(name of your token)",
       placeholder: "",
       type: "text",
-      name: "name"
+      name: "name",
     },
     {
       label: "Token Symbol",
       description: "(symbol of your token)",
       placeholder: "CSNSYS",
       type: "text",
-      name: "symbol"
+      name: "symbol",
     },
     {
       label: "Contract URI",
       description: "(link)",
       placeholder: "e.g. ipfs://ajfa0sdjasfd0asfj",
       type: "text",
-      name: "contract_uri"
-    }
+      name: "contract_uri",
+    },
   ];
 
   const wenSubmit = async (e) => {
     e.preventDefault();
     try {
-      if(sdk) {
-        const contractDeploymentPromise = sdk.deploy({
-          template: TEMPLATES.ERC721Mintable,
-          params: {
-            name: selectedName,
-            symbol: selectedSymbol,
-            contractURI: selectedContractUri
-          }
-        })
-        .then((contract) => {
-          setRespMsg(`Address: ${contract}`)
-          dispatch({
-            type: "CONNECTED_CONTRACT",
-            payload: {
-              contract
+      if (sdk) {
+        const contractDeploymentPromise = sdk
+          .deploy({
+            template: TEMPLATES.ERC721Mintable,
+            params: {
+              name: selectedName,
+              symbol: selectedSymbol,
+              contractURI: selectedContractUri,
+            },
+          })
+          .then(
+            (contractAddress) => {
+              setRespMsg(`Address: ${contractAddress}`);
+              dispatchRedux(
+                setContract({
+                  address: contractAddress,
+                  type: TEMPLATES.ERC721Mintable,
+                })
+              );
+            },
+            (reason) => {
+              setRespMsg(`Reason: ${reason}`);
             }
-          });
-        }, reason => {
-          setRespMsg(`Reason: ${reason}`)
-        });
+          );
 
-        toast.promise(
-          contractDeploymentPromise,
-          {
+        toast
+          .promise(contractDeploymentPromise, {
             position: "top-right",
             pending: "🦄 - Contract Deploying",
             success: `Deployed 👌: ${respMsg}`,
-            error: `Error 🤯: ${respMsg}`
-          }
-        ).finally(() => {
-          setIsOpen(false);
-        });
+            error: `Error 🤯: ${respMsg}`,
+          })
+          .finally(() => {
+            setIsOpen(false);
+          });
       }
     } catch (e) {
       console.log(e);

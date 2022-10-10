@@ -1,8 +1,16 @@
-import React, { Suspense, useCallback, useContext, useEffect, useState } from "react";
+import "./index.css";
+
+import React, {
+  Suspense,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
 import { EthProvider } from "../../ethereum";
 import { PuffLoader } from "react-spinners";
-
-import "./index.css";
+import { useSelector } from "react-redux";
 
 const Item = ({ asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
@@ -23,29 +31,34 @@ const Item = ({ asset }) => (
 const GalleryView = () => {
   const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const { sdk } = useContext(EthProvider);
 
-  const { sdk, user, contract } = useContext(EthProvider);
+  const contractAddress = useSelector((state) => state.contract.address);
+  const user = useSelector((state) => state.user.user);
 
-  const start = useCallback(async (address) => {
-    const data = await sdk.getNFTs({
-      publicAddress: address,
-      includeMetadata: true
-    });
+  const start = useCallback(
+    async (address) => {
+      const data = await sdk.getNFTs({
+        publicAddress: address,
+        includeMetadata: true,
+      });
 
-    const items = data.assets.reduce((listNfts, nft) => {
-      if (contract && contract.contractAddress) {
-        if( nft.contract.toLowerCase() === contract.contractAddress.toLowerCase()) {
-          listNfts.push(nft.metadata)
-          return listNfts
+      const items = data.assets.reduce((listNfts, nft) => {
+        if (contractAddress) {
+          if (nft.contract.toLowerCase() === contractAddress.toLowerCase()) {
+            listNfts.push(nft.metadata);
+            return listNfts;
+          }
+          return [...listNfts];
         }
         return [...listNfts];
-      }
-      return [...listNfts];
-    },[]);
+      }, []);
 
-    setItems(items);
-    setIsLoading(false);
-  }, [sdk]);
+      setItems(items);
+      setIsLoading(false);
+    },
+    [sdk]
+  );
 
   useEffect(() => {
     if (user && user.address) {
@@ -55,19 +68,19 @@ const GalleryView = () => {
     }
   }, [start, user]);
 
-  return (<>
-    {isLoading ? <div>Loading...</div> : items.length > 0 ?
-      items.map((item, i) => (
-        <Item
-          data-grid-groupkey={i}
-          key={i}
-          num={i}
-          asset={item}
-        />)
-      ) :
-      (<div>No NFTs</div>)
-    }
-  </>);
+  return (
+    <>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : items.length > 0 ? (
+        items.map((item, i) => (
+          <Item data-grid-groupkey={i} key={i} num={i} asset={item} />
+        ))
+      ) : (
+        <div>No NFTs</div>
+      )}
+    </>
+  );
 };
 
 export default GalleryView;

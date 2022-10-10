@@ -9,38 +9,6 @@ export const reducer = (state, action) => {
       return;
     }
 
-    case "CONNECTED_NETWORK": {
-      state.chainId = action.payload;
-      return;
-    }
-
-    case "CONNECTED_SIGNER": {
-      state.signer = action.payload;
-      return;
-    }
-
-    case "CONNECTED_CONTRACT": {
-      state.contract = action.payload.contract;
-      return;
-    }
-
-    case "SET_ACCOUNT": {
-      state.user = action.payload;
-      state.isLoading = false;
-      state.isConnected = true;
-      return;
-    }
-
-    case "DISCONNECT_ACCOUNT": {
-      state = action.payload;
-      return;
-    }
-
-    case "CLEAR_MODAL": {
-      state.trxFeedback = action.payload;
-      return;
-    }
-
     default:
       break;
   }
