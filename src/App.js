@@ -9,6 +9,7 @@ import LoadContract from "./pages/LoadContract";
 import Contract from "./pages/Contract";
 import NoMatch from "./pages/NoMatch";
 import 'react-toastify/dist/ReactToastify.min.css';
+import NftDetails from "./pages/NftDetails";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/add-contract" element={<AddContract />} />
           <Route path="/load-contract" element={<LoadContract />} />
           <Route path="/contract" element={<Contract />} />
+          <Route path="/nft/:id" element={<NftDetails />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>
