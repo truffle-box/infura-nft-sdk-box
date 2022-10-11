@@ -11,6 +11,7 @@ import React, {
 import { EthProvider } from "../../ethereum";
 import { PuffLoader } from "react-spinners";
 import { useSelector } from "react-redux";
+import GalleryContractDetails from "./galleryContractDetails";
 
 const Item = ({ asset }) => (
   <Suspense fallback={<PuffLoader loading={true} />}>
@@ -33,7 +34,7 @@ const GalleryView = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { sdk } = useContext(EthProvider);
 
-  const contractAddress = useSelector((state) => state.contract.address);
+  const contract = useSelector((state) => state.contract);
   const user = useSelector((state) => state.user.user);
 
   const start = useCallback(
@@ -44,8 +45,8 @@ const GalleryView = () => {
       });
 
       const items = data.assets.reduce((listNfts, nft) => {
-        if (contractAddress) {
-          if (nft.contract.toLowerCase() === contractAddress.toLowerCase()) {
+        if (contract.address) {
+          if (nft.contract.toLowerCase() === contract.address.toLowerCase()) {
             listNfts.push(nft.metadata);
             return listNfts;
           }
@@ -61,25 +62,27 @@ const GalleryView = () => {
   );
 
   useEffect(() => {
-    if (user && user.address) {
+    if (user && user.address && sdk !== null) {
       start(user.address);
     } else {
       setItems([]);
     }
   }, [start, user]);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (items.length === 0) return <div>No NFTs</div>;
+
   return (
-    <>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : items.length > 0 ? (
-        items.map((item, i) => (
+    <div style={{ display: "flex" }}>
+      <div style={{ flex: 1 }}>
+        <GalleryContractDetails contract={contract} />
+      </div>
+      <div style={{ flex: 3 }}>
+        {items.map((item, i) => (
           <Item data-grid-groupkey={i} key={i} num={i} asset={item} />
-        ))
-      ) : (
-        <div>No NFTs</div>
-      )}
-    </>
+        ))}
+      </div>
+    </div>
   );
 };
 

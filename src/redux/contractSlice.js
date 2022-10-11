@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const contractInitialState = {
   type: null,
   address: null,
+  metaData: null,
 };
 
 export const contractSlice = createSlice({
@@ -13,6 +14,7 @@ export const contractSlice = createSlice({
       const contract = payload;
       state.type = contract.type;
       state.address = contract.address;
+      state.metaData = contract.metaData
     },
     disconnectContract: (state) => {
       state.type = contractInitialState.type;
