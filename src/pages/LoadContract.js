@@ -23,7 +23,7 @@ const LoadContract = () => {
   const formRef = useRef();
   const dispatchRedux = useDispatch();
 
-  const templates = ["Unlimited"];
+  const templates = ["Unlimited", "Other"];
 
   const wenSubmit = async (e) => {
     if (!selectedCategory) {

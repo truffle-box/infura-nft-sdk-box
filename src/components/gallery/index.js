@@ -13,11 +13,21 @@ import { PuffLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import GalleryContractDetails from "./galleryContractDetails";
 
-const Item = ({ asset }) => (
-  <Suspense fallback={<PuffLoader loading={true} />}>
+const Item = ({ asset }) => {
+  const urlRegex = /(ipfs:\/\/){1}([^\s]+)/;
+  const isIpfsUrl = asset.image.match(urlRegex);
+  let imageUrl = asset.image;
+
+  if (isIpfsUrl) {
+    imageUrl = !!process.env.REACT_APP_IPFS_GATEWAY ? `${process.env.REACT_APP_IPFS_GATEWAY}/ipfs/${isIpfsUrl[2]}`: isIpfsUrl;
+    console.log('LLLPPPP ----', imageUrl);
+  }
+
+  return (
+    <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
       <div className="thumbnail">
-        <img src={asset?.image} alt="" />
+        <img src={imageUrl} alt="" />
       </div>
       <div className="info">
         <div className="title">{asset?.name}</div>
@@ -27,7 +37,9 @@ const Item = ({ asset }) => (
       </div>
     </div>
   </Suspense>
-);
+  )
+
+};
 
 const GalleryView = () => {
   const [items, setItems] = useState([]);
@@ -37,29 +49,30 @@ const GalleryView = () => {
   const contract = useSelector((state) => state.contract);
   const user = useSelector((state) => state.user.user);
 
-  const start = useCallback(
-    async (address) => {
-      const data = await sdk.getNFTs({
-        publicAddress: address,
-        includeMetadata: true,
+  const start = useCallback(async (address) => {
+    let data;
+    if (contract && contract.address) {
+      data = await sdk.getNFTsForCollection({ contractAddress: contract.address });
+      const items = data.assets.map((nft) =>{
+        return nft.metadata;
       });
-
-      const items = data.assets.reduce((listNfts, nft) => {
-        if (contract.address) {
-          if (nft.contract.toLowerCase() === contract.address.toLowerCase()) {
-            listNfts.push(nft.metadata);
-            return listNfts;
-          }
-          return [...listNfts];
-        }
-        return [...listNfts];
-      }, []);
-
       setItems(items);
       setIsLoading(false);
-    },
-    [sdk]
-  );
+      return;
+    }
+    data = await sdk.getNFTs({
+      publicAddress: address,
+      includeMetadata: true
+    });
+
+    const items = data.assets.map((nft) =>{
+      return nft.metadata;
+    });
+
+    setItems(items);
+    setIsLoading(false);
+    return;
+  }, [sdk, contract]);
 
   useEffect(() => {
     if (user && user.address && sdk !== null) {
