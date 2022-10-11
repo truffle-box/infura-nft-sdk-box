@@ -92,6 +92,17 @@ audio {
     overflow: scroll;
 }
 
+.item .info .attribute{
+    display: contents;
+    border-radius: 8px;
+    padding: 4px;
+    background: aliceblue;
+    font-weight: bold;
+    min-height: 50px;
+    max-height: 80px;
+    overflow: scroll;
+}
+
 
 .item.animate {
     transition: opacity ease 1s;

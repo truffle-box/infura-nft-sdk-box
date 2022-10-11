@@ -12,6 +12,8 @@ import { EthProvider } from "../../ethereum";
 import { PuffLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import GalleryContractDetails from "./galleryContractDetails";
+import { Link } from "react-router-dom";
+import { v4 as uuidv4 } from 'uuid';
 
 const Item = ({ asset }) => {
   const urlRegex = /(ipfs:\/\/){1}([^\s]+)/;
@@ -20,20 +22,26 @@ const Item = ({ asset }) => {
 
   if (isIpfsUrl) {
     imageUrl = !!process.env.REACT_APP_IPFS_GATEWAY ? `${process.env.REACT_APP_IPFS_GATEWAY}/ipfs/${isIpfsUrl[2]}`: isIpfsUrl;
-    console.log('LLLPPPP ----', imageUrl);
   }
 
+  const uuid = uuidv4()
   return (
     <Suspense fallback={<PuffLoader loading={true} />}>
     <div className="item">
-      <div className="thumbnail">
-        <img src={imageUrl} alt="" />
-      </div>
+      <Link to={{ pathname: `/nft/${uuid}` }} data ={asset} state={{ asset }}>  
+          <div className="thumbnail">
+                <img src={imageUrl} alt="" />
+            </div>
+        </Link> 
       <div className="info">
         <div className="title">{asset?.name}</div>
-        <audio controls>
-          <source src={asset?.animation_url} type="audio/mpeg" />
-        </audio>
+
+        {
+          asset.animation_url ? (<audio controls>
+            <source src={asset?.animation_url} type="audio/mpeg" />
+          </audio>) : ''
+        }
+        
       </div>
     </div>
   </Suspense>
