@@ -13,11 +13,18 @@ const NftDetails = () => {
   const fallbackImage =
     "https://img.freepik.com/premium-vector/80s-vintage-retro-sunset-landscape_1390-788.jpg?w=2000";
 
-  return (
-    <FullSizeWrapper className="item">
-      <div className="thumbnail">
-        <img src={asset?.image || fallbackImage} alt="" />
-      </div>
+    const urlRegex = /(ipfs:\/\/){1}([^\s]+)/;
+    const isIpfsUrl = asset.image.match(urlRegex);
+    let imageUrl = asset.image;
+
+    if (isIpfsUrl) {
+        imageUrl = !!process.env.REACT_APP_IPFS_GATEWAY ? `${process.env.REACT_APP_IPFS_GATEWAY}/ipfs/${isIpfsUrl[2]}`: isIpfsUrl;
+    }
+    return (
+        <FullSizeWrapper className="item">
+            <div className="thumbnail">
+                <img src={imageUrl || fallbackImage} alt="" />
+            </div>
 
       <div className="info">
         <div className="attribute">Name</div>
